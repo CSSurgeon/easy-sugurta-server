@@ -3,193 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EASYsugurta</title>
+    <title>EASYSUG'URTA</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Переменные для светлой и темной темы */
         :root {
-            --bg-color: #ffffff;
-            --secondary-bg: #f7f9fb;
-            --text-color: #222222;
-            --input-bg: #f0f2f5;
-            --accent-color: #0066cc;
-            --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --bg: #ffffff;
+            --text: #000000;
+            --card-bg: #ffffff;
+            --input-bg: #f2f2f7;
+            --accent: #005a92;
         }
-
+        /* Автоматическое переключение на тёмную тему */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-color: #1c1c1d;
-                --secondary-bg: #2c2c2e;
-                --text-color: #ffffff;
-                --input-bg: #3a3a3c;
-                --accent-color: #0a84ff;
-                --card-shadow: 0 4px 20px rgba(0,0,0,0.4);
+                --bg: #000000;
+                --text: #ffffff;
+                --card-bg: #1c1c1e;
+                --input-bg: #2c2c2e;
             }
         }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, system-ui, sans-serif;
             margin: 0; padding: 20px;
-            display: flex; flex-direction: column; align-items: center;
         }
-
-        .header {
-            width: 100%; display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 30px;
+        .logo-container { text-align: center; margin-bottom: 25px; }
+        .logo { width: 120px; height: auto; }
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
         }
-
-        .logo { height: 40px; }
-
-        .title-section { width: 100%; margin-bottom: 20px; }
-        .title-section h2 { font-size: 24px; font-weight: 700; margin: 0; }
-
-        /* Карточка как у Apex */
-        .main-card {
-            background: var(--bg-color);
-            width: 100%; border-radius: 24px; padding: 24px;
-            box-shadow: var(--card-shadow);
-            box-sizing: border-box;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .label { font-size: 14px; color: #8e8e93; margin-bottom: 8px; display: block; }
-
-        /* Поля ввода в стиле Apex */
         .input-group {
             background: var(--input-bg);
-            border-radius: 16px; padding: 12px 16px; margin-bottom: 16px;
-            display: flex; flex-direction: column;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
         }
-        
-        .input-group input {
+        .label { font-size: 13px; color: #8e8e93; margin-bottom: 4px; display: block; }
+        input {
             background: transparent; border: none; outline: none;
-            color: var(--text-color); font-size: 17px; padding: 4px 0;
-            width: 100%;
+            width: 100%; color: var(--text); font-size: 17px;
         }
-
-        /* Переключатель Региона */
-        .region-row {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 24px; font-size: 15px;
+        .btn-main {
+            background: var(--accent); color: white;
+            border: none; width: 100%; padding: 18px;
+            border-radius: 18px; font-weight: 600; font-size: 17px;
+            margin-top: 20px;
         }
-
-        .switch {
-            position: relative; display: inline-block; width: 51px; height: 31px;
-        }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #e9e9eb; transition: .4s; border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 27px; width: 27px; left: 2px; bottom: 2px;
-            background-color: white; transition: .4s; border-radius: 50%;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-        }
-        input:checked + .slider { background-color: #34c759; }
-        input:checked + .slider:before { transform: translateX(20px); }
-
-        /* Кнопка */
-        .btn-blue {
-            background: #005596; color: white; border: none;
-            width: 100%; padding: 18px; border-radius: 16px;
-            font-size: 17px; font-weight: 600; cursor: pointer;
-            margin-top: 10px; transition: transform 0.1s;
-        }
-        .btn-blue:active { transform: scale(0.98); }
-
-        /* Экран расчета */
-        .price-section { display: none; text-align: center; width: 100%; }
-        .price-title { font-size: 28px; font-weight: 700; margin-bottom: 10px; }
-        .price-sub { color: #8e8e93; margin-bottom: 30px; }
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <img src="https://raw.githubusercontent.com/CSSurgeon/easysugurta/main/logo.png" class="logo" alt="EASYsugurta">
-        <div style="font-size: 20px;">🇺🇿</div>
+    <div class="logo-container">
+        <img src="logo.png" class="logo" alt="EASYSUG'URTA">
     </div>
 
-    <div id="form-screen">
-        <div class="title-section">
-            <h2>ОСАГО</h2>
-            <p style="color: #8e8e93;">Транспортное средство</p>
+    <div class="card" id="main-card">
+        <h2 style="margin-top:0">ОСАГО</h2>
+        <div class="input-group">
+            <span class="label">Номер машины</span>
+            <input type="text" id="car-num" placeholder="01 A 777 AA">
         </div>
-
-        <div class="main-card">
-            <div class="region-row">
-                <span>Зарегистрирован в г.Ташкент или обл.</span>
-                <label class="switch">
-                    <input type="checkbox" id="tashkent" checked>
-                    <span class="slider"></span>
-                </label>
+        <div style="display: flex; gap: 10px;">
+            <div class="input-group" style="flex: 1;">
+                <span class="label">Серия</span>
+                <input type="text" id="seria" placeholder="AAF">
             </div>
-
-            <div class="input-group">
-                <span class="label">Номер машины</span>
-                <input type="text" id="car-num" placeholder="01 A 777 AA">
+            <div class="input-group" style="flex: 2;">
+                <span class="label">Номер техпаспорта</span>
+                <input type="text" id="tp-num" placeholder="1234567">
             </div>
-
-            <div style="display: flex; gap: 12px;">
-                <div class="input-group" style="flex: 1;">
-                    <span class="label">Серия</span>
-                    <input type="text" id="seria" placeholder="AAF">
-                </div>
-                <div class="input-group" style="flex: 2;">
-                    <span class="label">Номер техпаспорта</span>
-                    <input type="text" id="tp-num" placeholder="1234567">
-                </div>
-            </div>
-
-            <button class="btn-blue" onclick="showCalculation()">Найти</button>
         </div>
+        <button class="btn-main" onclick="calculate()">Рассчитать</button>
     </div>
 
-    <div id="price-screen" class="price-section">
-        <div class="main-card">
-            <h2 style="text-align: left; margin-bottom: 20px;">Расчет</h2>
-            <div style="text-align: left; margin-bottom: 20px;">
-                <div class="label">Сумма покрытия</div>
-                <div style="font-size: 22px; font-weight: 700;">80 000 000,00</div>
-            </div>
-            <div style="text-align: left; margin-bottom: 30px;">
-                <div class="label">Сумма оплаты</div>
-                <div style="font-size: 26px; font-weight: 800; color: var(--text-color);">192 000,00 сўм</div>
-            </div>
-            <button class="btn-blue" onclick="sendToBot()">Продолжить</button>
-        </div>
-    </div>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
 
-<script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.ready();
-
-    function showCalculation() {
-        const car = document.getElementById('car-num').value;
-        if(!car) {
-            tg.HapticFeedback.notificationOccurred('error');
-            return tg.showAlert("Введите номер автомобиля");
+        function calculate() {
+            // Логика перехода к расчету как на фото Apex
+            tg.HapticFeedback.impactOccurred('medium');
+            alert("Расчет: 192 000 сўм");
         }
-        
-        tg.HapticFeedback.impactOccurred('medium');
-        document.getElementById('form-screen').style.display = 'none';
-        document.getElementById('price-screen').style.display = 'block';
-    }
-
-    function sendToBot() {
-        const data = {
-            car: document.getElementById('car-num').value,
-            price: "192 000,00 сўм"
-        };
-        tg.sendData(JSON.stringify(data));
-        tg.close();
-    }
-</script>
+    </script>
 </body>
 </html>
