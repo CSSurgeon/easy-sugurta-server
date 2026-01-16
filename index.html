@@ -13,6 +13,18 @@
             --accent-color: #005a92;
             --gray-text: #8e8e93;
             --card-shadow: 0 4px 25px rgba(0,0,0,0.06);
+            --card-bg: #ffffff;
+        }
+
+        /* Добавлено: стили для ТЕМНОГО РЕЖИМА */
+        body.dark-mode {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --secondary-bg: #1c1c1e;
+            --accent-color: #0a84ff;
+            --gray-text: #a1a1a6;
+            --card-shadow: 0 4px 25px rgba(0,0,0,0.4);
+            --card-bg: #1c1c1e;
         }
 
         body {
@@ -20,46 +32,69 @@
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0; padding: 16px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .header { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .logo { width: 140px; height: auto; }
 
+        /* Добавлено: стили переключателя языков */
+        .lang-switcher { display: flex; gap: 5px; background: var(--secondary-bg); padding: 4px; border-radius: 12px; }
+        .lang-btn { 
+            border: none; background: transparent; color: var(--text-color); 
+            padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
+        }
+        .lang-btn.active { background: var(--accent-color); color: #fff; }
+
+        /* Добавлено: стили кнопки ТЕМЫ */
+        .theme-toggle {
+            background: var(--secondary-bg); border: none; border-radius: 50%;
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 18px; color: var(--text-color);
+        }
+
         .card {
-            background: #ffffff; border-radius: 24px; padding: 24px;
+            background: var(--card-bg); border-radius: 24px; padding: 24px;
             box-shadow: var(--card-shadow); margin-bottom: 16px;
         }
 
         h2 { font-size: 24px; font-weight: 700; margin: 0 0 10px 0; }
         .section-title { color: var(--gray-text); font-size: 14px; margin-bottom: 20px; }
 
-        /* Поля ввода как у APEX */
         .input-group { background: var(--secondary-bg); border-radius: 16px; padding: 12px 16px; margin-bottom: 12px; }
         .label { font-size: 13px; color: var(--gray-text); display: block; margin-bottom: 4px; }
-        select, input { background: transparent; border: none; outline: none; width: 100%; color: #000; font-size: 17px; }
+        select, input { background: transparent; border: none; outline: none; width: 100%; color: var(--text-color); font-size: 17px; }
 
         .btn-main {
             background: var(--accent-color); color: white; border: none; width: 100%;
             padding: 18px; border-radius: 18px; font-weight: 600; font-size: 17px; cursor: pointer;
         }
 
-        /* FAQ Стили */
         .faq-item { border-bottom: 1px solid var(--secondary-bg); padding: 16px 0; cursor: pointer; }
         .faq-header { display: flex; align-items: center; font-weight: 500; font-size: 16px; }
         .faq-icon { color: var(--gray-text); margin-right: 12px; font-size: 20px; }
-        .faq-content { display: none; padding-top: 12px; font-size: 15px; line-height: 1.5; color: #333; }
+        .faq-content { display: none; padding-top: 12px; font-size: 15px; line-height: 1.5; color: var(--gray-text); }
         .faq-content ul { padding-left: 20px; margin: 10px 0; }
 
-        /* Карточка Расчета */
         .calc-res { display: none; text-align: left; }
         .price-big { font-size: 28px; font-weight: 800; margin: 8px 0 24px 0; }
     </style>
 </head>
-<body>
+<body id="main-body">
 
     <div class="header">
-        <img src="logo.jpeg" class="logo" alt="EASY SUGURTA">
-        <div style="font-size: 20px;">🇺🇿</div>
+        <div class="header-top">
+            <img src="logo.jpeg" class="logo" alt="EASY SUGURTA">
+            
+            <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">🌓</button>
+        </div>
+        
+        <div class="lang-switcher">
+            <button class="lang-btn" id="lang-uz" onclick="changeLang('uz')">UZ</button>
+            <button class="lang-btn active" id="lang-ru" onclick="changeLang('ru')">RU</button>
+            <button class="lang-btn" id="lang-en" onclick="changeLang('en')">EN</button>
+        </div>
     </div>
 
     <div id="screen-form">
@@ -102,7 +137,7 @@
                 <div class="faq-header"><span class="faq-icon">+</span> Почему это важно</div>
                 <div id="faq-0" class="faq-content">
                     <ul>
-                        <li>По закону полис ОСАГО является обязательным для каждого автовладельца и покрывает случаи, когда водитель стал виновником аварии.</li>
+                        <li>По закону полис ОСАГО является обязательным для каждого автовладельца.</li>
                         <li>За отсутствие ОСАГО придется заплатить штраф.</li>
                     </ul>
                 </div>
@@ -111,25 +146,9 @@
                 <div class="faq-header"><span class="faq-icon">+</span> Преимущества страхования</div>
                 <div id="faq-1" class="faq-content">
                     <ul>
-                        <li><b>Удобное использование:</b> Предъявляйте электронный полис с экрана смартфона.</li>
-                        <li><b>Полностью онлайн:</b> Покупка и продление доступны без визита в офис.</li>
-                        <li><b>Поддержка 24/7:</b> Помощь при ДТП в любых ситуациях.</li>
+                        <li><b>Удобное использование:</b> Полис в смартфоне.</li>
+                        <li><b>Полностью онлайн:</b> Без визита в офис.</li>
                     </ul>
-                </div>
-            </div>
-            <div class="faq-item" onclick="toggleFaq(2)">
-                <div class="faq-header"><span class="faq-icon">+</span> Условия страхования</div>
-                <div id="faq-2" class="faq-content">
-                    <ul>
-                        <li><b>28 000 000 сум</b> - возмещение ущерба имуществу.</li>
-                        <li><b>52 000 000 сум</b> - возмещение ущерба жизни или здоровью.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="faq-item" onclick="toggleFaq(3)">
-                <div class="faq-header"><span class="faq-icon">+</span> Вопросы и ответы</div>
-                <div id="faq-3" class="faq-content">
-                    Оформить полис можно онлайн — быстро и надежно. Электронный полис имеет такую же юридическую силу, как бумажный.
                 </div>
             </div>
         </div>
@@ -151,6 +170,20 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
+
+        // Добавлено: Функция переключения ТЕМЫ
+        function toggleTheme() {
+            document.getElementById('main-body').classList.toggle('dark-mode');
+            tg.HapticFeedback.impactOccurred('light');
+        }
+
+        // Добавлено: Функция смены ЯЗЫКА
+        function changeLang(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('lang-' + lang).classList.add('active');
+            tg.HapticFeedback.selectionChanged();
+            // Здесь можно добавить логику перевода текстов через объект-словарь
+        }
 
         function toggleFaq(id) {
             const el = document.getElementById('faq-' + id);
