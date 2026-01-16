@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EASYsugurta</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --tg-theme-bg: var(--tg-theme-bg-color, #f0f2f5);
+            --primary: #c62828; /* Красный акцент как на твоем лого */
+            --card-bg: #ffffff;
+            --text-main: #333333;
+        }
+
+        body {
+            background-color: var(--tg-theme-bg);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; padding: 16px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* Логотип */
+        .brand-header {
+            display: flex; align-items: center; gap: 10px;
+            width: 100%; max-width: 400px; margin-bottom: 20px;
+        }
+        .logo-box {
+            background: var(--primary); color: white;
+            padding: 10px; border-radius: 12px; font-weight: bold;
+        }
+        .brand-name { font-size: 22px; font-weight: 800; color: var(--primary); }
+
+        .card {
+            background: var(--card-bg); width: 100%; max-width: 400px;
+            border-radius: 20px; padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-sizing: border-box; margin-bottom: 15px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h3 { margin-top: 0; font-size: 18px; color: #444; }
+
+        /* Переключатель Ташкент */
+        .toggle-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; font-size: 14px; color: #666;
+        }
+        .switch {
+            position: relative; display: inline-block; width: 44px; height: 24px;
+        }
+        .switch input { display: none; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc; transition: .4s; border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+            background-color: white; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #34c759; }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* Поля ввода */
+        .input-box { margin-bottom: 15px; }
+        label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; margin-left: 5px; }
+        .row { display: flex; gap: 10px; }
+        input {
+            width: 100%; padding: 14px; border: 1px solid #eee;
+            border-radius: 12px; font-size: 16px; outline: none;
+            background: #f9f9f9; transition: 0.3s;
+        }
+        input:focus { border-color: var(--primary); background: #fff; }
+
+        /* Карточка расчета */
+        .price-card {
+            background: linear-gradient(135deg, #f44336 0%, #c62828 100%);
+            color: white; border-radius: 18px; padding: 20px; text-align: center;
+            display: none; animation: scaleIn 0.3s ease;
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .price-val { font-size: 28px; font-weight: bold; margin: 10px 0; }
+
+        .btn-find {
+            background: var(--primary); color: white; border: none;
+            width: 100%; padding: 16px; border-radius: 15px;
+            font-size: 16px; font-weight: 600; margin-top: 10px;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(198, 40, 40, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="brand-header">
+        <div class="logo-box">ES</div>
+        <div class="brand-name">EASYsugurta</div>
+    </div>
+
+    <div class="card" id="form-card">
+        <div class="toggle-row">
+            <span>Зарегистрирован в г.Ташкент или обл.</span>
+            <label class="switch">
+                <input type="checkbox" id="region-tashkent" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="input-box">
+            <label>Номер машины</label>
+            <input type="text" id="car-num" placeholder="01 A 777 AA">
+        </div>
+
+        <div class="row">
+            <div class="input-box" style="flex: 1;">
+                <label>Серия техпаспорта</label>
+                <input type="text" id="tp-seria" placeholder="AAF">
+            </div>
+            <div class="input-box" style="flex: 2;">
+                <label>Номер техпаспорта</label>
+                <input type="text" id="tp-num" placeholder="1234567">
+            </div>
+        </div>
+
+        <button class="btn-find" onclick="calculate()">Найти</button>
+    </div>
+
+    <div class="price-card" id="price-card">
+        <div style="font-size: 14px; opacity: 0.8;">Сумма к оплате</div>
+        <div class="price-val" id="res-price">192 000,00 сўм</div>
+        <div style="font-size: 12px;">Покрытие: 80 000 000 сўм</div>
+        <button class="btn-find" style="background: white; color: var(--primary); margin-top: 15px;" onclick="sendToBot()">Продолжить</button>
+    </div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    function calculate() {
+        const car = document.getElementById('car-num').value;
+        if(!car) return tg.showAlert("Введите номер машины");
+
+        // Имитация расчета
+        document.getElementById('form-card').style.display = 'none';
+        document.getElementById('price-card').style.display = 'block';
+    }
+
+    function sendToBot() {
+        const data = {
+            car: document.getElementById('car-num').value,
+            price: "192 000,00 сўм",
+            status: "ready_to_pay"
+        };
+        tg.sendData(JSON.stringify(data));
+        tg.close();
+    }
+</script>
+</body>
+</html>
