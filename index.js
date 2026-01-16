@@ -1,20 +1,31 @@
-const TelegramBot = require('node-telegram-bot-api');
-const bot = new TelegramBot(process.env.BOT_TOKEN, {polling: true});
+import express from 'express';
+import TelegramBot from 'node-telegram-bot-api';
 
-const webAppUrl = 'https://CSSurgeon.github.io/easysugurta/'; 
+const app = express();
+app.use(express.json());
 
-bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, `👋 Добро пожаловать в **EASY SUGURTA**!\n\nОформите страховку быстро и надежно.`, {
-        parse_mode: 'Markdown',
-        reply_markup: {
-            inline_keyboard: [
-                [{ text: "🚀 Оформить полис", web_app: { url: webAppUrl } }]
-            ]
-        }
-    });
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send('Server is running');
 });
 
-bot.on('web_app_data', (msg) => {
-    const data = JSON.parse(msg.web_app_data.data);
-    bot.sendMessage(msg.chat.id, `✅ Заявка принята!\n🚗 Авто: ${data.car}\n💰 Сумма: ${data.price} сум\n\nОжидайте звонка специалиста.`);
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });
+
+// --- TELEGRAM BOT ---
+const token = process.env.BOT_TOKEN;
+
+if (!token) {
+  console.error('BOT_TOKEN not set');
+} else {
+  const bot = new TelegramBot(token, { polling: true });
+
+  bot.on('message', (msg) => {
+    bot.sendMessage(msg.chat.id, 'Бот работает ✅');
+  });
+
+  console.log('Бот запущен и готов к работе!');
+}
+;
