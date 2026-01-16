@@ -1,53 +1,188 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EASYsugurta</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EASY SUGURTA</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1c1c1e;
+            --input-bg: #f2f2f7;
+            --accent: #005a92;
+            --gray: #8e8e93;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #000000;
+                --text: #ffffff;
+                --input-bg: #1c1c1e;
+                --gray: #a1a1a6;
+            }
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, system-ui, sans-serif;
+            margin: 0; padding: 16px;
+            overflow-x: hidden;
+        }
+
+        /* Выбор языка */
+        .lang-selector {
+            display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 20px;
+        }
+        .lang-btn {
+            background: var(--input-bg); border: none; color: var(--text);
+            padding: 6px 12px; border-radius: 10px; font-size: 12px; font-weight: 600;
+        }
+        .lang-btn.active { background: var(--accent); color: white; }
+
+        .header { text-align: center; margin-bottom: 24px; }
+        .logo { width: 140px; border-radius: 15px; }
+
+        .card {
+            background: var(--bg); border-radius: 24px; padding: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08); margin-bottom: 16px;
+        }
+
+        .input-group {
+            background: var(--input-bg); border-radius: 16px;
+            padding: 12px 16px; margin-bottom: 12px;
+        }
+        .label { font-size: 12px; color: var(--gray); display: block; margin-bottom: 4px; }
+        input {
+            background: transparent; border: none; width: 100%;
+            color: var(--text); font-size: 17px; outline: none;
+        }
+
+        .btn-main {
+            background: var(--accent); color: white; border: none;
+            width: 100%; padding: 18px; border-radius: 18px;
+            font-size: 17px; font-weight: 600; cursor: pointer;
+        }
+
+        /* FAQ */
+        .faq-item { border-bottom: 1px solid var(--input-bg); padding: 15px 0; }
+        .faq-quest { font-weight: 600; font-size: 15px; display: flex; justify-content: space-between; }
+        .faq-ans { font-size: 14px; color: var(--gray); display: none; margin-top: 8px; }
+
+        .price-tag { font-size: 32px; font-weight: 800; color: var(--accent); margin: 15px 0; }
+        
+        #screen-price, #screen-faq { display: none; }
+    </style>
 </head>
 <body>
 
-<header class="top">
-  <h1>ОСАГО</h1>
-</header>
+    <div class="lang-selector">
+        <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" onclick="setLang('uz')">UZ</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
 
-<div class="card">
-  <label>Номер машины</label>
-  <input id="car" placeholder="01 A 777 AA" />
+    <div class="header">
+        <img src="logo.png" class="logo" alt="EASY SUGURTA">
+    </div>
 
-  <div class="row">
-    <input placeholder="Серия" />
-    <input placeholder="Номер" />
-  </div>
+    <div id="screen-form">
+        <div class="card">
+            <h2 id="t-osago">ОСАГО</h2>
+            <div class="input-group">
+                <span class="label" id="l-car">Номер машины</span>
+                <input type="text" id="car_num" placeholder="01 A 777 AA">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="input-group" style="flex: 1;">
+                    <span class="label" id="l-seria">Серия</span>
+                    <input type="text" id="seria" placeholder="AAF">
+                </div>
+                <div class="input-group" style="flex: 2;">
+                    <span class="label" id="l-tp">Номер техпаспорта</span>
+                    <input type="text" id="tp_num" placeholder="1234567">
+                </div>
+            </div>
+            <button class="btn-main" onclick="toPrice()" id="b-find">Найти</button>
+        </div>
+        
+        <button class="btn-main" style="background: var(--input-bg); color: var(--text); margin-top: 10px;" onclick="showFaq()" id="b-faq">Частые вопросы (FAQ)</button>
+    </div>
 
-  <button onclick="calc()">Найти</button>
-</div>
+    <div id="screen-price">
+        <div class="card" style="text-align: center;">
+            <h2 id="t-res">Результат расчета</h2>
+            <div class="label" id="l-pay">Сумма к оплате</div>
+            <div class="price-tag">192 000,00 сум</div>
+            <button class="btn-main" onclick="send()" id="b-cont">Продолжить</button>
+        </div>
+    </div>
 
-<div class="card hidden" id="result">
-  <h2>Расчет</h2>
-  <p>Покрытие: <b>80 000 000 сум</b></p>
-  <p>К оплате: <b>192 000 сум</b></p>
-  <button class="primary" onclick="send()">Продолжить</button>
-</div>
+    <div id="screen-faq">
+        <div class="card">
+            <h2 id="t-faq">FAQ</h2>
+            <div class="faq-item" onclick="toggleFaq(0)">
+                <div class="faq-quest">Что такое ОСАГО? <span>+</span></div>
+                <div class="faq-ans">Это обязательное страхование гражданской ответственности владельцев транспортных средств.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(1)">
+                <div class="faq-quest">Срок полиса? <span>+</span></div>
+                <div class="faq-ans">Обычно полис оформляется на 1 год.</div>
+            </div>
+            <button class="btn-main" style="margin-top: 20px;" onclick="backToForm()" id="b-back">Назад</button>
+        </div>
+    </div>
 
 <script>
-const tg = window.Telegram.WebApp;
-tg.expand();
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-function calc() {
-  document.getElementById("result").classList.remove("hidden");
-}
+    const texts = {
+        ru: { osago: "ОСАГО", car: "Номер машины", seria: "Серия", tp: "Номер техпаспорта", find: "Найти", faq: "Частые вопросы (FAQ)", res: "Результат расчета", pay: "Сумма к оплате", cont: "Продолжить", back: "Назад" },
+        uz: { osago: "O'SAGO", car: "Mashina raqami", seria: "Seriya", tp: "Tex-pasport raqami", find: "Topish", faq: "Ko'п beriladigan savollar", res: "Hisob-kitob", pay: "To'lov summasi", cont: "Davom etish", back: "Orqaga" },
+        en: { osago: "MTPL", car: "Car number", seria: "Series", tp: "Passport number", find: "Find", faq: "FAQ", res: "Result", pay: "Total to pay", cont: "Continue", back: "Back" }
+    };
 
-function send() {
-  tg.sendData(JSON.stringify({
-    car: document.getElementById("car").value,
-    price: "192 000 сум"
-  }));
-  tg.close();
-}
+    function setLang(lang) {
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        const t = texts[lang];
+        document.getElementById('t-osago').innerText = t.osago;
+        document.getElementById('l-car').innerText = t.car;
+        document.getElementById('l-seria').innerText = t.seria;
+        document.getElementById('l-tp').innerText = t.tp;
+        document.getElementById('b-find').innerText = t.find;
+        document.getElementById('b-faq').innerText = t.faq;
+        document.getElementById('b-back').innerText = t.back;
+        // ...добавь остальные ID аналогично
+    }
+
+    function toPrice() {
+        if(!document.getElementById('car_num').value) return tg.showAlert("Заполните данные");
+        document.getElementById('screen-form').style.display = 'none';
+        document.getElementById('screen-price').style.display = 'block';
+    }
+
+    function showFaq() {
+        document.getElementById('screen-form').style.display = 'none';
+        document.getElementById('screen-faq').style.display = 'block';
+    }
+
+    function backToForm() {
+        document.getElementById('screen-faq').style.display = 'none';
+        document.getElementById('screen-price').style.display = 'none';
+        document.getElementById('screen-form').style.display = 'block';
+    }
+
+    function toggleFaq(i) {
+        const ans = document.querySelectorAll('.faq-ans')[i];
+        ans.style.display = ans.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function send() {
+        tg.sendData(JSON.stringify({car: document.getElementById('car_num').value, price: "192 000"}));
+    }
 </script>
-
 </body>
 </html>
