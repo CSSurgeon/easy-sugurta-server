@@ -1,49 +1,20 @@
-import express from "express";
-import TelegramBot from "node-telegram-bot-api";
-import path from "path";
+const TelegramBot = require('node-telegram-bot-api');
+const bot = new TelegramBot(process.env.BOT_TOKEN, {polling: true});
 
-const app = express();
-const PORT = process.env.PORT || 10000;
+const webAppUrl = 'https://CSSurgeon.github.io/easysugurta/'; 
 
-const BOT_TOKEN = process.env.BOT_TOKEN;
-if (!BOT_TOKEN) {
-  console.error("❌ BOT_TOKEN не найден");
-  process.exit(1);
-}
-
-const bot = new TelegramBot(BOT_TOKEN, { polling: true });
-
-app.use(express.json());
-app.use(express.static("."));
-
-bot.on("message", (msg) => {
-  if (msg.text === "/start") {
-    bot.sendMessage(
-      msg.chat.id,
-      "Добро пожаловать в EASYsugurta 🚗\nНажмите кнопку ниже",
-      {
+bot.onText(/\/start/, (msg) => {
+    bot.sendMessage(msg.chat.id, `👋 Добро пожаловать в **EASY SUGURTA**!\n\nОформите страховку быстро и надежно.`, {
+        parse_mode: 'Markdown',
         reply_markup: {
-          inline_keyboard: [[
-            {
-              text: "Оформить ОСАГО",
-              web_app: { url: "https://cssurgeon.github.io/easy-sugurta-server/" }
-            }
-          ]]
+            inline_keyboard: [
+                [{ text: "🚀 Оформить полис", web_app: { url: webAppUrl } }]
+            ]
         }
-      }
-    );
-  }
+    });
 });
 
-bot.on("web_app_data", (msg) => {
-  const data = JSON.parse(msg.web_app_data.data);
-  bot.sendMessage(
-    msg.chat.id,
-    `🚘 Номер: ${data.car}\n💰 Сумма: ${data.price}\nСтатус: готово к оплате`
-  );
-});
-
-app.listen(PORT, () => {
-  console.log("✅ Сервер запущен на порту", PORT);
-  console.log("🤖 Бот запущен и готов к работе!");
+bot.on('web_app_data', (msg) => {
+    const data = JSON.parse(msg.web_app_data.data);
+    bot.sendMessage(msg.chat.id, `✅ Заявка принята!\n🚗 Авто: ${data.car}\n💰 Сумма: ${data.price} сум\n\nОжидайте звонка специалиста.`);
 });
