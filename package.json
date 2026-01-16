@@ -1,5 +1,5 @@
 {
-  "name": "easy-sugurta",
+  "name": "easy-sugurta-server",
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
@@ -11,3 +11,4 @@
     "node-telegram-bot-api": "^0.64.0"
   }
 }
+
