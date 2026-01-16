@@ -5,17 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Easy Sugurta</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <style>
-        /* БЕЛЫЙ ФОН И СТИЛИ ИЗ ФОТО */
         :root {
             --bg-color: #ffffff;
             --text-color: #222222;
             --input-bg: #f2f4f7;
-            --accent: #005596; /* Фирменный синий */
+            --accent: #005596;
             --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
-        /* ТЕМНЫЙ РЕЖИМ (автоматически от Telegram) */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-color: #1c1c1d;
@@ -28,124 +27,205 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: -apple-system, system-ui, sans-serif;
-            margin: 0; padding: 20px;
+            margin: 0;
+            padding: 20px;
         }
 
-        /* ЛОГОТИП EASY SUGURTA */
         .header {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 25px;
         }
-        .logo { height: 45px; border-radius: 8px; }
+
+        .logo {
+            height: 45px;
+            border-radius: 8px;
+        }
 
         .main-card {
             background: var(--bg-color);
-            border-radius: 24px; padding: 24px;
+            border-radius: 24px;
+            padding: 24px;
             box-shadow: var(--card-shadow);
             margin-bottom: 20px;
         }
 
-        /* ВЫБОР ВИДА АВТОМОБИЛЯ (как в 3 фото) */
         .select-group {
             background: var(--input-bg);
-            border-radius: 16px; padding: 12px 16px; margin-bottom: 16px;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
         }
-        .label { font-size: 13px; color: #8e8e93; margin-bottom: 4px; display: block; }
+
+        .label {
+            font-size: 13px;
+            color: #8e8e93;
+            margin-bottom: 4px;
+            display: block;
+        }
+
         select {
-            background: transparent; border: none; width: 100%;
-            color: var(--text-color); font-size: 17px; outline: none;
+            background: transparent;
+            border: none;
+            width: 100%;
+            color: var(--text-color);
+            font-size: 17px;
+            outline: none;
         }
 
-        /* ПЕРЕКЛЮЧАТЕЛЬ (Toggle) */
         .row-switch {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 15px;
         }
-        .switch { position: relative; width: 51px; height: 31px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #e9e9eb; transition: .4s; border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 27px; width: 27px; left: 2px; bottom: 2px;
-            background-color: white; transition: .4s; border-radius: 50%;
-        }
-        input:checked + .slider { background-color: #34c759; }
-        input:checked + .slider:before { transform: translateX(20px); }
 
-        /* ИНПУТЫ */
+        .switch {
+            position: relative;
+            width: 51px;
+            height: 31px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: #e9e9eb;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 27px;
+            width: 27px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #34c759;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
         .input-group {
             background: var(--input-bg);
-            border-radius: 16px; padding: 12px 16px; margin-bottom: 12px;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
         }
+
         input[type="text"] {
-            background: transparent; border: none; width: 100%;
-            color: var(--text-color); font-size: 17px; outline: none;
+            background: transparent;
+            border: none;
+            width: 100%;
+            color: var(--text-color);
+            font-size: 17px;
+            outline: none;
         }
 
         .btn-pay {
-            background: var(--accent); color: white; border: none;
-            width: 100%; padding: 18px; border-radius: 16px;
-            font-size: 17px; font-weight: 600; cursor: pointer;
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
-        /* FAQ РАЗДЕЛ (как ты просил) */
-        .faq-section { margin-top: 30px; }
-        .faq-item {
-            background: var(--input-bg); border-radius: 12px;
-            padding: 15px; margin-bottom: 10px; cursor: pointer;
+        .faq-section {
+            margin-top: 30px;
         }
-        .faq-question { font-weight: 600; display: flex; justify-content: space-between; }
-        .faq-answer { display: none; margin-top: 10px; font-size: 14px; color: #666; }
+
+        .faq-item {
+            background: var(--input-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .faq-answer {
+            display: none;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
     </style>
 </head>
+
 <body>
 
-    <div class="header">
-        <img src=""D:\BOKOSH\photo_2025-12-14_10-53-38.jpg"" class="logo" alt="Easy Sugurta">
-        <div style="font-size: 20px;">🇺🇿</div>
+<div class="header">
+    <img src=""D:\BOKOSH\photo_2025-12-14_10-53-38.png"" class="logo" alt="Easy Sugurta">
+    <div style="font-size: 20px;">🇺🇿</div>
+</div>
+
+<div class="main-card">
+    <h2>ОСАГО</h2>
+
+    <div class="select-group">
+        <span class="label">Тип транспорта</span>
+        <select>
+            <option>Легковые автомобили</option>
+            <option>Грузовые автомобили</option>
+            <option>Автобусы</option>
+        </select>
     </div>
 
-    <div class="main-card">
-        <h2 style="margin: 0 0 20px 0;">ОСАГО</h2>
-
-        <div class="select-group">
-            <span class="label">Тип транспорта</span>
-            <select id="vehicle-type">
-                <option value="sedan">Легковые автомобили</option>
-                <option value="truck">Грузовые автомобили</option>
-                <option value="bus">Автобусы</option>
-            </select>
-        </div>
-
-        <div class="row-switch">
-            <span>Зарегистрирован в г.Ташкент</span>
-            <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="input-group">
-            <span class="label">Номер машины</span>
-            <input type="text" placeholder="01 A 777 AA">
-        </div>
-
-        <button class="btn-pay" onclick="calculate()">Найти</button>
+    <div class="row-switch">
+        <span>Зарегистрирован в г. Ташкент</span>
+        <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+        </label>
     </div>
 
-    <div class="faq-section">
-        <h3 style="margin-left: 10px;">Часто задаваемые вопросы</h3>
-        <div class="faq-item" onclick="toggleFaq(0)">
-            <div class="faq-question">Что такое ОСАГО? <span>+</span></div>
-            <div class="faq-answer">Это обязательное страхование ответственности водителя перед третьими лицами.</div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(1)">
-            <div class="faq-question">Как долго ждать полис? <span>+</span></div>
-            <div class="faq-answer">Полис оформляется онлайн в течение 3-5 минут после оплаты.</div>
-        </div>
+    <div class="input-group">
+        <span class="label">Номер машины</span>
+        <input type="text" placeholder="01 A 777 AA">
     </div>
+
+    <button class="btn-pay" onclick="calculate()">Найти</button>
+</div>
+
+<div class="faq-section">
+    <h3>Часто задаваемые вопросы</h3>
+
+    <div class="faq-item" onclick="toggleFaq(0)">
+        <div class="faq-question">Что такое ОСАГО? <span>+</span></div>
+        <div class="faq-answer">Обязательное страхование ответственности водителя.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(1)">
+        <div class="faq-question">Сколько ждать полис? <span>+</span></div>
+        <div class="faq-answer">3–5 минут после оплаты.</div>
+    </div>
+</div>
 
 <script>
     const tg = window.Telegram.WebApp;
@@ -156,11 +236,11 @@
         alert("Расчет: 192 000 сўм");
     }
 
-    function toggleFaq(index) {
-        const answers = document.querySelectorAll('.faq-answer');
-        const current = answers[index].style.display;
-        answers[index].style.display = current === 'block' ? 'none' : 'block';
+    function toggleFaq(i) {
+        const a = document.querySelectorAll('.faq-answer')[i];
+        a.style.display = a.style.display === 'block' ? 'none' : 'block';
     }
 </script>
+
 </body>
 </html>
