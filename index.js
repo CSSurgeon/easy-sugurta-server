@@ -1,29 +1,49 @@
-const TelegramBot = require('node-telegram-bot-api');
+import express from "express";
+import TelegramBot from "node-telegram-bot-api";
+import path from "path";
 
-// Используем переменную окружения для токена
-const token = process.env.BOT_TOKEN;
-const bot = new TelegramBot(token, {polling: true});
+const app = express();
+const PORT = process.env.PORT || 10000;
 
-// Твоя ссылка на GitHub Pages (обязательно включи её в настройках GitHub!)
-const webAppUrl = 'https://CSSurgeon.github.io/easysugurta/'; 
+const BOT_TOKEN = process.env.BOT_TOKEN;
+if (!BOT_TOKEN) {
+  console.error("❌ BOT_TOKEN не найден");
+  process.exit(1);
+}
 
-bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, `🚗 **EASYSUG'URTA**\n\nСтраховой полис ОСАГО онлайн за 3 минуты.`, {
-        parse_mode: 'Markdown',
+const bot = new TelegramBot(BOT_TOKEN, { polling: true });
+
+app.use(express.json());
+app.use(express.static("."));
+
+bot.on("message", (msg) => {
+  if (msg.text === "/start") {
+    bot.sendMessage(
+      msg.chat.id,
+      "Добро пожаловать в EASYsugurta 🚗\nНажмите кнопку ниже",
+      {
         reply_markup: {
-            inline_keyboard: [
-                [{ text: "📝 Оформить ОСАГО", web_app: { url: webAppUrl } }]
-            ]
+          inline_keyboard: [[
+            {
+              text: "Оформить ОСАГО",
+              web_app: { url: "https://cssurgeon.github.io/easy-sugurta-server/" }
+            }
+          ]]
         }
-    });
+      }
+    );
+  }
 });
 
-// Получение данных из Mini App
-bot.on('web_app_data', async (msg) => {
-    const data = JSON.parse(msg.web_app_data.data);
-    const text = `✅ **Расчет готов!**\n\n🚗 Машина: ${data.car}\n💰 Сумма: ${data.price}\n\nНаш менеджер свяжется с вами для оплаты.`;
-    
-    await bot.sendMessage(msg.chat.id, text, { parse_mode: 'Markdown' });
+bot.on("web_app_data", (msg) => {
+  const data = JSON.parse(msg.web_app_data.data);
+  bot.sendMessage(
+    msg.chat.id,
+    `🚘 Номер: ${data.car}\n💰 Сумма: ${data.price}\nСтатус: готово к оплате`
+  );
 });
 
-console.log("Бот запущен и готов к работе!");
+app.listen(PORT, () => {
+  console.log("✅ Сервер запущен на порту", PORT);
+  console.log("🤖 Бот запущен и готов к работе!");
+});
