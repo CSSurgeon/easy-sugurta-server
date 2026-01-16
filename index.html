@@ -7,86 +7,131 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg: #ffffff;
-            --text: #000000;
-            --card-bg: #ffffff;
+            --bg-color: #ffffff;
+            --text-color: #000000;
             --input-bg: #f2f2f7;
-            --accent: #005a92;
+            --accent: #005a92; /* Цвет Apex */
+            --card-bg: #ffffff;
         }
-        /* Автоматическое переключение на тёмную тему */
+
+        /* Автоматическая темная тема */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #000000;
-                --text: #ffffff;
+                --bg-color: #000000;
+                --text-color: #ffffff;
+                --input-bg: #1c1c1e;
                 --card-bg: #1c1c1e;
-                --input-bg: #2c2c2e;
             }
         }
+
         body {
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: -apple-system, system-ui, sans-serif;
             margin: 0; padding: 20px;
+            transition: all 0.3s ease;
         }
-        .logo-container { text-align: center; margin-bottom: 25px; }
-        .logo { width: 120px; height: auto; }
-        .card {
+
+        .logo-area { text-align: center; margin-bottom: 20px; }
+        .logo-img { width: 140px; height: auto; border-radius: 12px; }
+
+        .main-card {
             background: var(--card-bg);
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 24px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+            animation: slideUp 0.4s ease;
         }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         .input-group {
             background: var(--input-bg);
-            border-radius: 16px;
+            border-radius: 18px;
             padding: 12px 16px;
             margin-bottom: 12px;
         }
-        .label { font-size: 13px; color: #8e8e93; margin-bottom: 4px; display: block; }
+
+        .label { font-size: 13px; color: #8e8e93; display: block; margin-bottom: 4px; }
+
         input {
             background: transparent; border: none; outline: none;
-            width: 100%; color: var(--text); font-size: 17px;
+            width: 100%; color: var(--text-color); font-size: 17px;
         }
-        .btn-main {
+
+        .btn-pay {
             background: var(--accent); color: white;
             border: none; width: 100%; padding: 18px;
-            border-radius: 18px; font-weight: 600; font-size: 17px;
-            margin-top: 20px;
+            border-radius: 20px; font-weight: 600; font-size: 17px;
+            cursor: pointer; margin-top: 20px;
         }
+
+        /* Скрытые элементы до расчета */
+        #price-view { display: none; text-align: left; }
     </style>
 </head>
 <body>
-    <div class="logo-container">
-        <img src="logo.png" class="logo" alt="EASYSUG'URTA">
+    <div class="logo-area">
+        <img src="logo.png" class="logo-img" alt="EASYSUG'URTA">
     </div>
 
-    <div class="card" id="main-card">
-        <h2 style="margin-top:0">ОСАГО</h2>
+    <div class="main-card" id="form-view">
+        <h2 style="margin-bottom: 25px;">ОСАГО</h2>
+        
         <div class="input-group">
             <span class="label">Номер машины</span>
-            <input type="text" id="car-num" placeholder="01 A 777 AA">
+            <input type="text" id="car_num" placeholder="01 A 777 AA">
         </div>
+
         <div style="display: flex; gap: 10px;">
             <div class="input-group" style="flex: 1;">
                 <span class="label">Серия</span>
-                <input type="text" id="seria" placeholder="AAF">
+                <input type="text" id="tp_seria" placeholder="AAF">
             </div>
             <div class="input-group" style="flex: 2;">
                 <span class="label">Номер техпаспорта</span>
-                <input type="text" id="tp-num" placeholder="1234567">
+                <input type="text" id="tp_num" placeholder="1234567">
             </div>
         </div>
-        <button class="btn-main" onclick="calculate()">Рассчитать</button>
+
+        <button class="btn-pay" onclick="calc()">Найти</button>
+    </div>
+
+    <div class="main-card" id="price-view">
+        <h2>Расчет</h2>
+        <div style="margin-bottom: 20px;">
+            <span class="label">Сумма покрытия</span>
+            <div style="font-size: 24px; font-weight: 700;">80 000 000,00</div>
+        </div>
+        <div style="margin-bottom: 30px;">
+            <span class="label">Сумма оплаты</span>
+            <div style="font-size: 28px; font-weight: 800; color: var(--accent);">192 000,00 сўм</div>
+        </div>
+        <button class="btn-pay" onclick="send()">Продолжить</button>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
+        tg.ready();
 
-        function calculate() {
-            // Логика перехода к расчету как на фото Apex
+        function calc() {
+            if(!document.getElementById('car_num').value) return tg.showAlert("Введите номер!");
             tg.HapticFeedback.impactOccurred('medium');
-            alert("Расчет: 192 000 сўм");
+            document.getElementById('form-view').style.display = 'none';
+            document.getElementById('price-view').style.display = 'block';
+        }
+
+        function send() {
+            const data = {
+                car: document.getElementById('car_num').value,
+                price: "192 000,00 сўм"
+            };
+            tg.sendData(JSON.stringify(data));
+            tg.close();
         }
     </script>
 </body>
