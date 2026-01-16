@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 10000;
 const WEBHOOK_URL = "https://api.render.com/deploy/srv-d5l760er433s73f1rv0g?key=I3iplVoYjLU";
 
 // Mini App URL (GitHub Pages)
-const webAppUrl = "https://CSSurgeon.github.io/easysugurta/";
+const webAppUrl = "https://cssurgeon.github.io/easy-sugurta-server/";
 
 const bot = new TelegramBot(TOKEN);
 
