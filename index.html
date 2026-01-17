@@ -242,7 +242,6 @@
             document.querySelectorAll('.faq-icon')[id].innerText = isVisible ? '+' : '−';
         }
 
-        /* Добавлено: Логика РАСЧЕТА цены по региону и типу авто */
         function showCalc() {
             if(!document.getElementById('car-num').value) return tg.showAlert("Error: Enter car number");
             
@@ -251,10 +250,8 @@
             let price = "0";
 
             if (vehicleType === "passenger") {
-                // Цена для легкового авто
                 price = isTashkent ? "192 000,00" : "160 000,00";
             } else {
-                // Для других видов транспорта можно добавить свою логику позже
                 price = isTashkent ? "250 000,00" : "210 000,00";
             }
 
