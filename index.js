@@ -30,6 +30,7 @@ app.post(WEBHOOK_PATH, (req, res) => {
 // Команда /start
 const webAppUrl = 'https://cssurgeon.github.io/easy-sugurta-server/';
 
+
 bot.onText(/\/start/, (msg) => {
   bot.sendMessage(
     msg.chat.id,
