@@ -83,7 +83,6 @@
         .faq-content { display: none; padding-top: 12px; font-size: 15px; line-height: 1.5; color: var(--gray-text); }
         .faq-content ul { padding-left: 20px; margin: 10px 0; }
 
-        /* Блок расчета скрыт до нажатия кнопки */
         .calc-res { display: none; text-align: left; margin-top: 10px; }
         .price-big { font-size: 28px; font-weight: 800; margin: 8px 0 24px 0; }
     </style>
@@ -165,7 +164,7 @@
             <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q1">Почему это важно</span></div>
             <div id="faq-0" class="faq-content">
                 <ul>
-                    <li id="faq-a1-1">По закону полис ОСАГО является обязательным для каждого автовладельца и покрывает случаи, когда водитель стал виновником аварии.</li>
+                    <li id="faq-a1-1">По закону полис ОСАГО является обязательным для каждого автовладельца.</li>
                     <li id="faq-a1-2">За отсутствие ОСАГО придется заплатить штраф.</li>
                 </ul>
             </div>
@@ -183,8 +182,8 @@
             <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q3">Условия страхования</span></div>
             <div id="faq-2" class="faq-content">
                 <ul>
-                    <li id="faq-a3-1"><b>28 000 000 сум</b> - возмещение ущерба чужому имуществу.</li>
-                    <li id="faq-a3-2"><b>52 000 000 сум</b> - возмещение ущерба жизни или здоровью.</li>
+                    <li id="faq-a3-1"><b>28 000 000 сум</b> - ущерб чужому имуществу.</li>
+                    <li id="faq-a3-2"><b>52 000 000 сум</b> - ущерб жизни или здоровью.</li>
                 </ul>
             </div>
         </div>
@@ -198,21 +197,21 @@
             ru: {
                 title: "ОСАГО", subtitle: "Транспортное средство", region: "Зарегистрирован в г.Ташкент или обл.", vtype: "Тип транспорта", carnum: "Номер машины",
                 seria: "Серия", tpnum: "Номер техпаспорта", find: "Найти", faq_title: "Часто задаваемые вопросы (FAQ)",
-                q1: "Почему это важно", q2: "Преимущества страхования", q3: "Условия страхования", q4: "Вопросы и ответы",
+                q1: "Почему это важно", q2: "Преимущества страхования", q3: "Условия страхования",
                 calc: "Расчет", cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
                 opt1: "Легковые автомобили", opt2: "Грузовые автомобили", opt3: "Автобус или микроавтобус", opt4: "Другие"
             },
             uz: {
                 title: "O'SAGO", subtitle: "Transport vositasi", region: "Toshkent sh. yoki viloyatida ro'yxatga olingan", vtype: "Transport turi", carnum: "Mashina raqami",
                 seria: "Seriya", tpnum: "Tex-pasport raqami", find: "Topish", faq_title: "Ko'p beriladigan savollar (FAQ)",
-                q1: "Nega bu muhim", q2: "Sug'urta afzalliklari", q3: "Sug'urta shartlari", q4: "Savol va javoblar",
+                q1: "Nega bu muhim", q2: "Sug'urta afzalliklari", q3: "Sug'urta shartlari",
                 calc: "Hisob-kitob", cover: "Qoplama summasi", sum: "To'lov summasi", cont: "Davom etish",
                 opt1: "Yengil avtomobillar", opt2: "Yuk avtomobillari", opt3: "Avtobus yoki mikroavtobus", opt4: "Boshqalar"
             },
             en: {
                 title: "MTPL", subtitle: "Vehicle", region: "Registered in Tashkent city or region", vtype: "Vehicle type", carnum: "Car number",
                 seria: "Series", tpnum: "Registration number", find: "Find", faq_title: "Frequently Asked Questions (FAQ)",
-                q1: "Why is it important", q2: "Insurance benefits", q3: "Insurance terms", q4: "Questions and answers",
+                q1: "Why is it important", q2: "Insurance benefits", q3: "Insurance terms",
                 calc: "Calculation", cover: "Coverage amount", sum: "Payment amount", cont: "Continue",
                 opt1: "Passenger cars", opt2: "Trucks", opt3: "Bus or minibus", opt4: "Others"
             }
@@ -240,6 +239,10 @@
             document.getElementById('txt-cover').innerText = t.cover;
             document.getElementById('txt-sum').innerText = t.sum;
             document.getElementById('btn-cont').innerText = t.cont;
+            document.getElementById('opt-1').innerText = t.opt1;
+            document.getElementById('opt-2').innerText = t.opt2;
+            document.getElementById('opt-3').innerText = t.opt3;
+            document.getElementById('opt-4').innerText = t.opt4;
             tg.HapticFeedback.selectionChanged();
         }
 
@@ -250,19 +253,30 @@
             document.querySelectorAll('.faq-icon')[id].innerText = isVisible ? '+' : '−';
         }
 
+        /* ОБНОВЛЕННАЯ ЛОГИКА РАСЧЕТА */
         function showCalc() {
             if(!document.getElementById('car-num').value) return tg.showAlert("Error: Enter car number");
             
             const isTashkent = document.getElementById('region-checkbox').checked;
             const vehicleType = document.getElementById('v-type').value;
-            let price = (vehicleType === "passenger") ? (isTashkent ? "192 000,00" : "160 000,00") : "250 000,00";
+            let priceValue = 0;
 
-            document.getElementById('final-price-display').innerText = price + " сўм";
+            // Цены для Ташкента (включено) и Областей (выключено)
+            if (vehicleType === "passenger") {
+                priceValue = isTashkent ? 192000 : 160000;
+            } else if (vehicleType === "truck") {
+                priceValue = isTashkent ? 320000 : 280000;
+            } else if (vehicleType === "bus") {
+                priceValue = isTashkent ? 250000 : 210000;
+            } else {
+                priceValue = isTashkent ? 150000 : 120000;
+            }
+
+            // Форматирование цены
+            const formattedPrice = priceValue.toLocaleString('ru-RU') + ",00 сўм";
+            document.getElementById('final-price-display').innerText = formattedPrice;
             
-            // ВАЖНО: Мы не прячем форму, а показываем расчет под ней
             document.getElementById('screen-result').style.display = 'block';
-            
-            // Плавный скролл к результату
             window.scrollTo({ top: document.getElementById('screen-result').offsetTop, behavior: 'smooth' });
             tg.HapticFeedback.impactOccurred('medium');
         }
