@@ -56,7 +56,9 @@
             box-shadow: var(--card-shadow); margin-bottom: 16px;
         }
 
-        .region-toggle { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        /* Добавлено: Стили для переключателя РЕГИОНА */
+        .region-toggle { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 5px; }
+        .region-text { font-size: 14px; color: var(--text-color); }
         .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
@@ -76,14 +78,13 @@
             padding: 18px; border-radius: 18px; font-weight: 600; font-size: 17px; cursor: pointer;
         }
 
-        /* Стили FAQ */
         .faq-item { border-bottom: 1px solid var(--secondary-bg); padding: 16px 0; cursor: pointer; }
         .faq-header { display: flex; align-items: center; font-weight: 500; font-size: 16px; }
-        .faq-icon { color: var(--gray-text); margin-right: 12px; font-size: 20px; font-weight: 300; }
+        .faq-icon { color: var(--gray-text); margin-right: 12px; font-size: 20px; }
         .faq-content { display: none; padding-top: 12px; font-size: 15px; line-height: 1.5; color: var(--gray-text); }
         .faq-content ul { padding-left: 20px; margin: 10px 0; }
 
-        #screen-result { display: none; }
+        .calc-res { display: none; text-align: left; }
         .price-big { font-size: 28px; font-weight: 800; margin: 8px 0 24px 0; }
     </style>
 </head>
@@ -92,8 +93,9 @@
     <div class="header">
         <div class="header-top">
             <img src="logo.jpeg" class="logo" alt="EASY SUGURTA">
-            <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+            <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">🌓</button>
         </div>
+        
         <div class="lang-switcher">
             <button class="lang-btn" id="lang-uz" onclick="changeLang('uz')">UZ</button>
             <button class="lang-btn active" id="lang-ru" onclick="changeLang('ru')">RU</button>
@@ -103,38 +105,44 @@
 
     <div id="screen-form">
         <h2 id="txt-title">ОСАГО</h2>
+        <div class="section-title" id="txt-subtitle">Транспортное средство</div>
+
         <div class="card">
             <div class="region-toggle">
-                <span id="txt-region" style="font-size: 14px;">Зарегистрирован в г.Ташкент или обл.</span>
+                <span class="region-text" id="txt-region">Зарегистрирован в г.Ташкент или обл.</span>
                 <label class="switch">
                     <input type="checkbox" id="region-checkbox" checked>
                     <span class="slider"></span>
                 </label>
             </div>
+
             <div class="input-group">
                 <span class="label" id="txt-vtype">Тип транспорта</span>
                 <select id="v-type">
                     <option value="passenger" id="opt-1">Легковые автомобили</option>
                     <option value="truck" id="opt-2">Грузовые автомобили</option>
                     <option value="bus" id="opt-3">Автобус или микроавтобус</option>
+                    <option value="other" id="opt-4">Другие</option>
                 </select>
             </div>
+
             <div class="input-group">
                 <span class="label" id="txt-carnum">Номер машины</span>
                 <input type="text" id="car-num" placeholder="01 A 777 AA">
             </div>
-            <button class="btn-main" onclick="showCalc()" id="btn-find">Найти</button>
-        </div>
-    </div>
 
-    <div id="screen-result">
-        <div class="card">
-            <h2 id="txt-calc">Расчет</h2>
-            <div class="label" id="txt-cover">Сумма покрытия</div>
-            <div style="font-size: 22px; font-weight: 700;">80 000 000,00</div>
-            <div class="label" style="margin-top: 20px;" id="txt-sum">Сумма оплаты</div>
-            <div class="price-big" id="final-price-display">192 000,00 сўм</div>
-            <button class="btn-main" onclick="sendData()" id="btn-cont">Продолжить</button>
+            <div style="display: flex; gap: 10px;">
+                <div class="input-group" style="flex: 1;">
+                    <span class="label" id="txt-seria">Серия</span>
+                    <input type="text" id="seria" placeholder="AAF">
+                </div>
+                <div class="input-group" style="flex: 2;">
+                    <span class="label" id="txt-tpnum">Номер техпаспорта</span>
+                    <input type="text" id="tp-num" placeholder="1234567">
+                </div>
+            </div>
+
+            <button class="btn-main" onclick="showCalc()" id="btn-find">Найти</button>
         </div>
 
         <h3 style="margin: 24px 0 16px 8px;" id="txt-faq-title">Часто задаваемые вопросы (FAQ)</h3>
@@ -148,15 +156,19 @@
                     </ul>
                 </div>
             </div>
-            <div class="faq-item" onclick="toggleFaq(1)">
-                <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q2">Преимущества страхования</span></div>
-                <div id="faq-1" class="faq-content">
-                    <ul>
-                        <li id="faq-a2-1"><b>Удобное использование:</b> Предъявляйте электронный полис со смартфона.</li>
-                        <li id="faq-a2-2"><b>Полностью онлайн:</b> Оформление без визита в офис.</li>
-                    </ul>
-                </div>
-            </div>
+        </div>
+    </div>
+
+    <div id="screen-result" class="calc-res">
+        <div class="card">
+            <h2 id="txt-calc">Расчет</h2>
+            <div class="label" style="margin-top: 20px;" id="txt-cover">Сумма покрытия</div>
+            <div style="font-size: 22px; font-weight: 700;">80 000 000,00</div>
+            
+            <div class="label" style="margin-top: 20px;" id="txt-sum">Сумма оплаты</div>
+            <div class="price-big" id="final-price-display">192 000,00 сўм</div>
+            
+            <button class="btn-main" onclick="sendData()" id="btn-cont">Продолжить</button>
         </div>
     </div>
 
@@ -166,45 +178,52 @@
 
         const translations = {
             ru: {
-                title: "ОСАГО", region: "Зарегистрирован в г.Ташкент или обл.", vtype: "Тип транспорта", carnum: "Номер машины",
-                find: "Найти", faq_title: "Часто задаваемые вопросы (FAQ)", q1: "Почему это важно",
-                a1_1: "По закону полис ОСАГО является обязательным для каждого автовладельца.",
-                a1_2: "За отсутствие ОСАГО придется заплатить штраф.", q2: "Преимущества страхования",
-                a2_1: "Удобное использование: Предъявляйте электронный полис со смартфона.",
-                a2_2: "Полностью онлайн: Оформление без визита в офис.", calc: "Расчет",
-                cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
-                opt1: "Легковые автомобили", opt2: "Грузовые автомобили", opt3: "Автобус или микроавтобус"
+                title: "ОСАГО", subtitle: "Транспортное средство", region: "Зарегистрирован в г.Ташкент или обл.", vtype: "Тип транспорта", carnum: "Номер машины",
+                seria: "Серия", tpnum: "Номер техпаспорта", find: "Найти", faq_title: "Часто задаваемые вопросы (FAQ)",
+                q1: "Почему это важно", a1_1: "По закону полис ОСАГО является обязательным для каждого автовладельца.",
+                a1_2: "За отсутствие ОСАГО придется заплатить штраф.",
+                calc: "Расчет", cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
+                opt1: "Легковые автомобили", opt2: "Грузовые автомобили", opt3: "Автобус или микроавтобус", opt4: "Другие"
             },
             uz: {
-                title: "O'SAGO", region: "Toshkent sh. yoki viloyatida ro'yxatga olingan", vtype: "Transport turi", carnum: "Mashina raqami",
-                find: "Topish", faq_title: "Ko'p beriladigan savollar (FAQ)", q1: "Nega bu muhim",
-                a1_1: "Qonunga ko'ra, O'SAGO polisi har bir avtomobil egasi uchun majburiydir.",
-                a1_2: "O'SAGO yo'qligi uchun jarima to'lashga to'g'ri keladi.", q2: "Sug'urtaning afzalliklari",
-                a2_1: "Qulay foydalanish: Elektron polisni smartfondan ko'rsating.",
-                a2_2: "To'liq onlayn: Ofisga bormasdan rasmiylashtirish.", calc: "Hisob-kitob",
-                cover: "Qoplama summasi", sum: "To'lov summasi", cont: "Davom etish",
-                opt1: "Yengil avtomobillar", opt2: "Yuk avtomobillari", opt3: "Avtobus yoki mikroavtobus"
+                title: "O'SAGO", subtitle: "Transport vositasi", region: "Toshkent sh. yoki viloyatida ro'yxatga olingan", vtype: "Transport turi", carnum: "Mashina raqami",
+                seria: "Seriya", tpnum: "Tex-pasport raqami", find: "Topish", faq_title: "Ko'p beriladigan savollar (FAQ)",
+                q1: "Nega bu muhim", a1_1: "Qonunga ko'ra, O'SAGO polisi har bir avtomobil egasi uchun majburiydir.",
+                a1_2: "O'SAGO yo'qligi uchun jarima to'lashga to'g'ri keladi.",
+                calc: "Hisob-kitob", cover: "Qoplama summasi", sum: "To'lov summasi", cont: "Davom etish",
+                opt1: "Yengil avtomobillar", opt2: "Yuk avtomobillari", opt3: "Avtobus yoki mikroavtobus", opt4: "Boshqalar"
+            },
+            en: {
+                title: "MTPL", subtitle: "Vehicle", region: "Registered in Tashkent city or region", vtype: "Vehicle type", carnum: "Car number",
+                seria: "Series", tpnum: "Registration number", find: "Find", faq_title: "Frequently Asked Questions (FAQ)",
+                q1: "Why is it important", a1_1: "By law, MTPL policy is mandatory for every car owner.",
+                a1_2: "A fine will have to be paid for the absence of MTPL.",
+                calc: "Calculation", cover: "Coverage amount", sum: "Payment amount", cont: "Continue",
+                opt1: "Passenger cars", opt2: "Trucks", opt3: "Bus or minibus", opt4: "Others"
             }
         };
 
-        function toggleTheme() { document.getElementById('main-body').classList.toggle('dark-mode'); tg.HapticFeedback.impactOccurred('light'); }
+        function toggleTheme() {
+            document.getElementById('main-body').classList.toggle('dark-mode');
+            tg.HapticFeedback.impactOccurred('light');
+        }
 
         function changeLang(lang) {
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('lang-' + lang).classList.add('active');
             const t = translations[lang];
             document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('txt-subtitle').innerText = t.subtitle;
             document.getElementById('txt-region').innerText = t.region;
             document.getElementById('txt-vtype').innerText = t.vtype;
             document.getElementById('txt-carnum').innerText = t.carnum;
+            document.getElementById('txt-seria').innerText = t.seria;
+            document.getElementById('txt-tpnum').innerText = t.tpnum;
             document.getElementById('btn-find').innerText = t.find;
             document.getElementById('txt-faq-title').innerText = t.faq_title;
             document.getElementById('faq-q1').innerText = t.q1;
             document.getElementById('faq-a1-1').innerText = t.a1_1;
             document.getElementById('faq-a1-2').innerText = t.a1_2;
-            document.getElementById('faq-q2').innerText = t.q2;
-            document.getElementById('faq-a2-1').innerText = t.a2_1;
-            document.getElementById('faq-a2-2').innerText = t.a2_2;
             document.getElementById('txt-calc').innerText = t.calc;
             document.getElementById('txt-cover').innerText = t.cover;
             document.getElementById('txt-sum').innerText = t.sum;
@@ -212,6 +231,7 @@
             document.getElementById('opt-1').innerText = t.opt1;
             document.getElementById('opt-2').innerText = t.opt2;
             document.getElementById('opt-3').innerText = t.opt3;
+            document.getElementById('opt-4').innerText = t.opt4;
             tg.HapticFeedback.selectionChanged();
         }
 
@@ -222,11 +242,22 @@
             document.querySelectorAll('.faq-icon')[id].innerText = isVisible ? '+' : '−';
         }
 
+        /* Добавлено: Логика РАСЧЕТА цены по региону и типу авто */
         function showCalc() {
-            if(!document.getElementById('car-num').value) return tg.showAlert("Введите номер машины");
+            if(!document.getElementById('car-num').value) return tg.showAlert("Error: Enter car number");
+            
             const isTashkent = document.getElementById('region-checkbox').checked;
             const vehicleType = document.getElementById('v-type').value;
-            let price = isTashkent ? "192 000,00" : "160 000,00";
+            let price = "0";
+
+            if (vehicleType === "passenger") {
+                // Цена для легкового авто
+                price = isTashkent ? "192 000,00" : "160 000,00";
+            } else {
+                // Для других видов транспорта можно добавить свою логику позже
+                price = isTashkent ? "250 000,00" : "210 000,00";
+            }
+
             document.getElementById('final-price-display').innerText = price + " сўм";
             document.getElementById('screen-form').style.display = 'none';
             document.getElementById('screen-result').style.display = 'block';
@@ -234,7 +265,10 @@
         }
 
         function sendData() {
-            const data = { car: document.getElementById('car-num').value, price: document.getElementById('final-price-display').innerText };
+            const data = {
+                car: document.getElementById('car-num').value,
+                price: document.getElementById('final-price-display').innerText
+            };
             tg.sendData(JSON.stringify(data));
             tg.close();
         }
