@@ -56,7 +56,6 @@
             box-shadow: var(--card-shadow); margin-bottom: 16px;
         }
 
-        /* Добавлено: Стили для переключателя РЕГИОНА */
         .region-toggle { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 5px; }
         .region-text { font-size: 14px; color: var(--text-color); }
         .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
@@ -84,7 +83,8 @@
         .faq-content { display: none; padding-top: 12px; font-size: 15px; line-height: 1.5; color: var(--gray-text); }
         .faq-content ul { padding-left: 20px; margin: 10px 0; }
 
-        .calc-res { display: none; text-align: left; }
+        /* Блок расчета скрыт до нажатия кнопки */
+        .calc-res { display: none; text-align: left; margin-top: 10px; }
         .price-big { font-size: 28px; font-weight: 800; margin: 8px 0 24px 0; }
     </style>
 </head>
@@ -157,42 +157,35 @@
             
             <button class="btn-main" onclick="sendData()" id="btn-cont">Продолжить</button>
         </div>
+    </div>
 
-        <h3 style="margin: 24px 0 16px 8px;" id="txt-faq-title">Часто задаваемые вопросы (FAQ)</h3>
-        <div class="card" style="padding: 0 20px;">
-            <div class="faq-item" onclick="toggleFaq(0)">
-                <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q1">Почему это важно</span></div>
-                <div id="faq-0" class="faq-content">
-                    <ul>
-                        <li id="faq-a1-1">По закону полис ОСАГО является обязательным для каждого автовладельца и покрывает случаи, когда водитель стал виновником аварии и должен возместить ущерб другим.</li>
-                        <li id="faq-a1-2">За отсутствие ОСАГО придется заплатить штраф.</li>
-                    </ul>
-                </div>
+    <h3 style="margin: 24px 0 16px 8px;" id="txt-faq-title">Часто задаваемые вопросы (FAQ)</h3>
+    <div class="card" style="padding: 0 20px; margin-bottom: 40px;">
+        <div class="faq-item" onclick="toggleFaq(0)">
+            <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q1">Почему это важно</span></div>
+            <div id="faq-0" class="faq-content">
+                <ul>
+                    <li id="faq-a1-1">По закону полис ОСАГО является обязательным для каждого автовладельца и покрывает случаи, когда водитель стал виновником аварии.</li>
+                    <li id="faq-a1-2">За отсутствие ОСАГО придется заплатить штраф.</li>
+                </ul>
             </div>
-            <div class="faq-item" onclick="toggleFaq(1)">
-                <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q2">Преимущества страхования</span></div>
-                <div id="faq-1" class="faq-content">
-                    <ul>
-                        <li id="faq-a2-1"><b>Удобное использование:</b> Предъявляйте электронный полис с экрана смартфона.</li>
-                        <li id="faq-a2-2"><b>Полностью онлайн:</b> Покупка, продление и внесение изменений доступны без визита в офис.</li>
-                        <li id="faq-a2-3"><b>Поддержка 24/7:</b> Помощь при ДТП и консультации в любых ситуациях.</li>
-                    </ul>
-                </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(1)">
+            <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q2">Преимущества страхования</span></div>
+            <div id="faq-1" class="faq-content">
+                <ul>
+                    <li id="faq-a2-1"><b>Удобное использование:</b> Предъявляйте электронный полис со смартфона.</li>
+                    <li id="faq-a2-2"><b>Полностью онлайн:</b> Покупка без визита в офис.</li>
+                </ul>
             </div>
-            <div class="faq-item" onclick="toggleFaq(2)">
-                <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q3">Условия страхования</span></div>
-                <div id="faq-2" class="faq-content">
-                    <ul>
-                        <li id="faq-a3-1"><b>28 000 000 сум</b> - возмещение ущерба, причинённого чужому автомобилю или имуществу.</li>
-                        <li id="faq-a3-2"><b>52 000 000 сум</b> - возмещение ущерба, причинённого жизни или здоровью.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="faq-item" onclick="toggleFaq(3)">
-                <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q4">Вопросы и ответы</span></div>
-                <div id="faq-3" class="faq-content">
-                    Оформить полис можно онлайн на сайте <b>APEX INSURANCE</b> — быстро, удобно и надёжно. Электронный полис имеет такую же юридическую силу, как бумажный.
-                </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(2)">
+            <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q3">Условия страхования</span></div>
+            <div id="faq-2" class="faq-content">
+                <ul>
+                    <li id="faq-a3-1"><b>28 000 000 сум</b> - возмещение ущерба чужому имуществу.</li>
+                    <li id="faq-a3-2"><b>52 000 000 сум</b> - возмещение ущерба жизни или здоровью.</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -243,18 +236,10 @@
             document.getElementById('txt-tpnum').innerText = t.tpnum;
             document.getElementById('btn-find').innerText = t.find;
             document.getElementById('txt-faq-title').innerText = t.faq_title;
-            document.getElementById('faq-q1').innerText = t.q1;
-            document.getElementById('faq-q2').innerText = t.q2;
-            document.getElementById('faq-q3').innerText = t.q3;
-            document.getElementById('faq-q4').innerText = t.q4;
             document.getElementById('txt-calc').innerText = t.calc;
             document.getElementById('txt-cover').innerText = t.cover;
             document.getElementById('txt-sum').innerText = t.sum;
             document.getElementById('btn-cont').innerText = t.cont;
-            document.getElementById('opt-1').innerText = t.opt1;
-            document.getElementById('opt-2').innerText = t.opt2;
-            document.getElementById('opt-3').innerText = t.opt3;
-            document.getElementById('opt-4').innerText = t.opt4;
             tg.HapticFeedback.selectionChanged();
         }
 
@@ -270,26 +255,23 @@
             
             const isTashkent = document.getElementById('region-checkbox').checked;
             const vehicleType = document.getElementById('v-type').value;
-            let price = "0";
-
-            if (vehicleType === "passenger") {
-                price = isTashkent ? "192 000,00" : "160 000,00";
-            } else {
-                price = isTashkent ? "250 000,00" : "210 000,00";
-            }
+            let price = (vehicleType === "passenger") ? (isTashkent ? "192 000,00" : "160 000,00") : "250 000,00";
 
             document.getElementById('final-price-display').innerText = price + " сўм";
-            document.getElementById('screen-form').style.display = 'none';
+            
+            // ВАЖНО: Мы не прячем форму, а показываем расчет под ней
             document.getElementById('screen-result').style.display = 'block';
+            
+            // Плавный скролл к результату
+            window.scrollTo({ top: document.getElementById('screen-result').offsetTop, behavior: 'smooth' });
             tg.HapticFeedback.impactOccurred('medium');
         }
 
         function sendData() {
-            const data = {
+            tg.sendData(JSON.stringify({
                 car: document.getElementById('car-num').value,
                 price: document.getElementById('final-price-display').innerText
-            };
-            tg.sendData(JSON.stringify(data));
+            }));
             tg.close();
         }
     </script>
