@@ -28,7 +28,7 @@ app.post(WEBHOOK_PATH, (req, res) => {
 });
 
 // Команда /start
-const webAppUrl = 'https://CSSurgeon.github.io/easysugurta/';
+const webAppUrl = 'https://cssurgeon.github.io/easy-sugurta-server/';
 
 bot.onText(/\/start/, (msg) => {
   bot.sendMessage(
