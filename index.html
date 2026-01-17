@@ -76,6 +76,7 @@
             padding: 18px; border-radius: 18px; font-weight: 600; font-size: 17px; cursor: pointer;
         }
 
+        /* Стили FAQ */
         .faq-item { border-bottom: 1px solid var(--secondary-bg); padding: 16px 0; cursor: pointer; }
         .faq-header { display: flex; align-items: center; font-weight: 500; font-size: 16px; }
         .faq-icon { color: var(--gray-text); margin-right: 12px; font-size: 20px; font-weight: 300; }
@@ -156,21 +157,6 @@
                     </ul>
                 </div>
             </div>
-            <div class="faq-item" onclick="toggleFaq(2)">
-                <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q3">Что такое европротокол?</span></div>
-                <div id="faq-2" class="faq-content">
-                    <p id="faq-a3">Это упрощённый способ оформления ДТП без вызова сотрудников ГУБДД, если нет пострадавших и ущерб не превышает лимит.</p>
-                </div>
-            </div>
-            <div class="faq-item" onclick="toggleFaq(3)">
-                <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q4">Чем отличается ОСАГО от КАСКО?</span></div>
-                <div id="faq-3" class="faq-content">
-                    <ul>
-                        <li id="faq-a4-1"><b>ОСАГО:</b> страхует вашу ответственность перед третьими лицами.</li>
-                        <li id="faq-a4-2"><b>КАСКО:</b> страхует сам автомобиль от ущерба и угона.</li>
-                    </ul>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -184,24 +170,18 @@
                 find: "Найти", faq_title: "Часто задаваемые вопросы (FAQ)", q1: "Почему это важно",
                 a1_1: "По закону полис ОСАГО является обязательным для каждого автовладельца.",
                 a1_2: "За отсутствие ОСАГО придется заплатить штраф.", q2: "Преимущества страхования",
-                a2_1: "Удобное использование: Электронный полис в смартфоне.",
-                a2_2: "Полностью онлайн: Оформление без визита в офис.", q3: "Что такое европротокол?",
-                a3: "Упрощённый способ оформления ДТП без ГУБДД при малом ущербе.",
-                q4: "Чем отличается ОСАГО от КАСКО?", a4_1: "ОСАГО: ответственность перед другими.",
-                a4_2: "КАСКО: защита вашего авто.", calc: "Расчет", cover: "Сумма покрытия",
-                sum: "Сумма оплаты", cont: "Продолжить", opt1: "Легковые автомобили", 
-                opt2: "Грузовые автомобили", opt3: "Автобус или микроавтобус"
+                a2_1: "Удобное использование: Предъявляйте электронный полис со смартфона.",
+                a2_2: "Полностью онлайн: Оформление без визита в офис.", calc: "Расчет",
+                cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
+                opt1: "Легковые автомобили", opt2: "Грузовые автомобили", opt3: "Автобус или микроавтобус"
             },
             uz: {
                 title: "O'SAGO", region: "Toshkent sh. yoki viloyatida ro'yxatga olingan", vtype: "Transport turi", carnum: "Mashina raqami",
                 find: "Topish", faq_title: "Ko'p beriladigan savollar (FAQ)", q1: "Nega bu muhim",
-                a1_1: "Qonunga ko'ra, O'SAGO har bir avtomobil egasi uchun majburiy.",
-                a1_2: "O'SAGO bo'lmasa, jarima to'lash kerak bo'ladi.", q2: "Sug'urtaning afzalliklari",
-                a2_1: "Qulay foydalanish: Elektron polis smartfonda.",
-                a2_2: "To'liq onlayn: Ofisga bormasdan.", q3: "Evroprotokol nima?",
-                a3: "Kichik zarar bo'lganda YHXB xodimlarisiz rasmiylashtirish usuli.",
-                q4: "O'SAGO va KASKO farqi?", a4_1: "O'SAGO: boshqalarga yetkazilgan zarar.",
-                a4_2: "KASKO: o'z avtomobilingiz himoyasi.", calc: "Hisob-kitob",
+                a1_1: "Qonunga ko'ra, O'SAGO polisi har bir avtomobil egasi uchun majburiydir.",
+                a1_2: "O'SAGO yo'qligi uchun jarima to'lashga to'g'ri keladi.", q2: "Sug'urtaning afzalliklari",
+                a2_1: "Qulay foydalanish: Elektron polisni smartfondan ko'rsating.",
+                a2_2: "To'liq onlayn: Ofisga bormasdan rasmiylashtirish.", calc: "Hisob-kitob",
                 cover: "Qoplama summasi", sum: "To'lov summasi", cont: "Davom etish",
                 opt1: "Yengil avtomobillar", opt2: "Yuk avtomobillari", opt3: "Avtobus yoki mikroavtobus"
             }
@@ -225,11 +205,6 @@
             document.getElementById('faq-q2').innerText = t.q2;
             document.getElementById('faq-a2-1').innerText = t.a2_1;
             document.getElementById('faq-a2-2').innerText = t.a2_2;
-            document.getElementById('faq-q3').innerText = t.q3;
-            document.getElementById('faq-a3').innerText = t.a3;
-            document.getElementById('faq-q4').innerText = t.q4;
-            document.getElementById('faq-a4-1').innerText = t.a4_1;
-            document.getElementById('faq-a4-2').innerText = t.a4_2;
             document.getElementById('txt-calc').innerText = t.calc;
             document.getElementById('txt-cover').innerText = t.cover;
             document.getElementById('txt-sum').innerText = t.sum;
@@ -250,6 +225,7 @@
         function showCalc() {
             if(!document.getElementById('car-num').value) return tg.showAlert("Введите номер машины");
             const isTashkent = document.getElementById('region-checkbox').checked;
+            const vehicleType = document.getElementById('v-type').value;
             let price = isTashkent ? "192 000,00" : "160 000,00";
             document.getElementById('final-price-display').innerText = price + " сўм";
             document.getElementById('screen-form').style.display = 'none';
