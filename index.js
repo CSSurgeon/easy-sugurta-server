@@ -1,32 +1,29 @@
-const TelegramBot = require('node-telegram-bot-api');
+import TelegramBot from 'node-telegram-bot-api';
 
-const bot = new TelegramBot(process.env.BOT_TOKEN, {
-    polling: {
-        autoStart: true,
-        params: { timeout: 10 }
+const token = process.env.BOT_TOKEN;
+// Используем ESM синтаксис для создания бота
+const bot = new TelegramBot(token, { polling: true });
+
+const webAppUrl = 'https://CSSurgeon.github.io/easysugurta/'; 
+
+bot.onText(/\/start/, (msg) => {
+    bot.sendMessage(msg.chat.id, `🚗 **EASY SUGURTA**\n\nРассчитайте ОСАГО онлайн за 2 минуты. Нажмите кнопку ниже:`, {
+        parse_mode: 'Markdown',
+        reply_markup: {
+            inline_keyboard: [
+                [{ text: "💎 Оформить полис", web_app: { url: webAppUrl } }]
+            ]
+        }
+    });
+});
+
+bot.on('web_app_data', async (msg) => {
+    try {
+        const data = JSON.parse(msg.web_app_data.data);
+        await bot.sendMessage(msg.chat.id, `✅ **Расчет принят!**\n\n🚗 Машина: ${data.car}\n💰 Сумма: ${data.price}\n\nНаш менеджер свяжется с вами для оформления оплаты.`);
+    } catch (e) {
+        console.error('Ошибка обработки данных:', e);
     }
 });
 
-const webAppUrl = 'https://CSSurgeon.github.io/easysugurta/';
-
-bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(
-        msg.chat.id,
-        '👋 Добро пожаловать в EASY SUGURTA\n\nОформите ОСАГО онлайн',
-        {
-            reply_markup: {
-                inline_keyboard: [
-                    [{ text: '🚀 Начать расчёт', web_app: { url: webAppUrl } }]
-                ]
-            }
-        }
-    );
-});
-
-bot.on('web_app_data', (msg) => {
-    const data = JSON.parse(msg.web_app_data.data);
-    bot.sendMessage(
-        msg.chat.id,
-        `✅ Заявка принята!\n\n🚗 Авто: ${data.car}\n💰 Сумма: ${data.price} сум\n\nНаш специалист свяжется с вами.`
-    );
-});
+console.log("Бот EASY SUGURTA (ESM) запущен на Node 22...");
