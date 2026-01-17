@@ -83,7 +83,8 @@
         .faq-content { display: none; padding-top: 12px; font-size: 15px; line-height: 1.5; color: var(--gray-text); }
         .faq-content ul { padding-left: 20px; margin: 10px 0; }
 
-        .calc-res { display: none; text-align: left; margin-top: 10px; }
+        /* Блок расчета ВСЕГДА ВИДЕН */
+        .calc-res { display: block; text-align: left; margin-top: 10px; }
         .price-big { font-size: 28px; font-weight: 800; margin: 8px 0 24px 0; }
     </style>
 </head>
@@ -110,14 +111,14 @@
             <div class="region-toggle">
                 <span class="region-text" id="txt-region">Зарегистрирован в г.Ташкент или обл.</span>
                 <label class="switch">
-                    <input type="checkbox" id="region-checkbox" checked>
+                    <input type="checkbox" id="region-checkbox" checked onchange="updateLivePrice()">
                     <span class="slider"></span>
                 </label>
             </div>
 
             <div class="input-group">
                 <span class="label" id="txt-vtype">Тип транспорта</span>
-                <select id="v-type">
+                <select id="v-type" onchange="updateLivePrice()">
                     <option value="passenger" id="opt-1">Легковые автомобили</option>
                     <option value="truck" id="opt-2">Грузовые автомобили</option>
                     <option value="bus" id="opt-3">Автобус или микроавтобус</option>
@@ -140,8 +141,6 @@
                     <input type="text" id="tp-num" placeholder="1234567">
                 </div>
             </div>
-
-            <button class="btn-main" onclick="showCalc()" id="btn-find">Найти</button>
         </div>
     </div>
 
@@ -165,25 +164,6 @@
             <div id="faq-0" class="faq-content">
                 <ul>
                     <li id="faq-a1-1">По закону полис ОСАГО является обязательным для каждого автовладельца.</li>
-                    <li id="faq-a1-2">За отсутствие ОСАГО придется заплатить штраф.</li>
-                </ul>
-            </div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(1)">
-            <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q2">Преимущества страхования</span></div>
-            <div id="faq-1" class="faq-content">
-                <ul>
-                    <li id="faq-a2-1"><b>Удобное использование:</b> Предъявляйте электронный полис со смартфона.</li>
-                    <li id="faq-a2-2"><b>Полностью онлайн:</b> Покупка без визита в офис.</li>
-                </ul>
-            </div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(2)">
-            <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q3">Условия страхования</span></div>
-            <div id="faq-2" class="faq-content">
-                <ul>
-                    <li id="faq-a3-1"><b>28 000 000 сум</b> - ущерб чужому имуществу.</li>
-                    <li id="faq-a3-2"><b>52 000 000 сум</b> - ущерб жизни или здоровью.</li>
                 </ul>
             </div>
         </div>
@@ -197,22 +177,19 @@
             ru: {
                 title: "ОСАГО", subtitle: "Транспортное средство", region: "Зарегистрирован в г.Ташкент или обл.", vtype: "Тип транспорта", carnum: "Номер машины",
                 seria: "Серия", tpnum: "Номер техпаспорта", find: "Найти", faq_title: "Часто задаваемые вопросы (FAQ)",
-                q1: "Почему это важно", q2: "Преимущества страхования", q3: "Условия страхования",
-                calc: "Расчет", cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
+                q1: "Почему это важно", calc: "Расчет", cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
                 opt1: "Легковые автомобили", opt2: "Грузовые автомобили", opt3: "Автобус или микроавтобус", opt4: "Другие"
             },
             uz: {
                 title: "O'SAGO", subtitle: "Transport vositasi", region: "Toshkent sh. yoki viloyatida ro'yxatga olingan", vtype: "Transport turi", carnum: "Mashina raqami",
                 seria: "Seriya", tpnum: "Tex-pasport raqami", find: "Topish", faq_title: "Ko'p beriladigan savollar (FAQ)",
-                q1: "Nega bu muhim", q2: "Sug'urta afzalliklari", q3: "Sug'urta shartlari",
-                calc: "Hisob-kitob", cover: "Qoplama summasi", sum: "To'lov summasi", cont: "Davom etish",
+                q1: "Nega bu muhim", calc: "Hisob-kitob", cover: "Qoplama summasi", sum: "To'lov summasi", cont: "Davom etish",
                 opt1: "Yengil avtomobillar", opt2: "Yuk avtomobillari", opt3: "Avtobus yoki mikroavtobus", opt4: "Boshqalar"
             },
             en: {
                 title: "MTPL", subtitle: "Vehicle", region: "Registered in Tashkent city or region", vtype: "Vehicle type", carnum: "Car number",
                 seria: "Series", tpnum: "Registration number", find: "Find", faq_title: "Frequently Asked Questions (FAQ)",
-                q1: "Why is it important", q2: "Insurance benefits", q3: "Insurance terms",
-                calc: "Calculation", cover: "Coverage amount", sum: "Payment amount", cont: "Continue",
+                q1: "Why is it important", calc: "Calculation", cover: "Coverage amount", sum: "Payment amount", cont: "Continue",
                 opt1: "Passenger cars", opt2: "Trucks", opt3: "Bus or minibus", opt4: "Others"
             }
         };
@@ -233,7 +210,6 @@
             document.getElementById('txt-carnum').innerText = t.carnum;
             document.getElementById('txt-seria').innerText = t.seria;
             document.getElementById('txt-tpnum').innerText = t.tpnum;
-            document.getElementById('btn-find').innerText = t.find;
             document.getElementById('txt-faq-title').innerText = t.faq_title;
             document.getElementById('txt-calc').innerText = t.calc;
             document.getElementById('txt-cover').innerText = t.cover;
@@ -253,15 +229,13 @@
             document.querySelectorAll('.faq-icon')[id].innerText = isVisible ? '+' : '−';
         }
 
-        /* ОБНОВЛЕННАЯ ЛОГИКА РАСЧЕТА */
-        function showCalc() {
-            if(!document.getElementById('car-num').value) return tg.showAlert("Error: Enter car number");
-            
+        /* ГЛАВНАЯ ЛОГИКА: АВТОМАТИЧЕСКИЙ ПЕРЕСЧЕТ В РЕАЛЬНОМ ВРЕМЕНИ */
+        function updateLivePrice() {
             const isTashkent = document.getElementById('region-checkbox').checked;
             const vehicleType = document.getElementById('v-type').value;
             let priceValue = 0;
 
-            // Цены для Ташкента (включено) и Областей (выключено)
+            // Цены для Ташкента (включено) и областей (выключено)
             if (vehicleType === "passenger") {
                 priceValue = isTashkent ? 192000 : 160000;
             } else if (vehicleType === "truck") {
@@ -272,22 +246,22 @@
                 priceValue = isTashkent ? 150000 : 120000;
             }
 
-            // Форматирование цены
-            const formattedPrice = priceValue.toLocaleString('ru-RU') + ",00 сўм";
-            document.getElementById('final-price-display').innerText = formattedPrice;
-            
-            document.getElementById('screen-result').style.display = 'block';
-            window.scrollTo({ top: document.getElementById('screen-result').offsetTop, behavior: 'smooth' });
-            tg.HapticFeedback.impactOccurred('medium');
+            // Мгновенное обновление текста в блоке расчета
+            document.getElementById('final-price-display').innerText = priceValue.toLocaleString('ru-RU') + ",00 сўм";
+            tg.HapticFeedback.selectionChanged();
         }
 
         function sendData() {
+            if(!document.getElementById('car-num').value) return tg.showAlert("Error: Enter car number");
             tg.sendData(JSON.stringify({
                 car: document.getElementById('car-num').value,
                 price: document.getElementById('final-price-display').innerText
             }));
             tg.close();
         }
+
+        // Запуск первого расчета при открытии
+        updateLivePrice();
     </script>
 </body>
 </html>
