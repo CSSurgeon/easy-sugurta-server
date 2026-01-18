@@ -5,16 +5,11 @@ const token = process.env.BOT_TOKEN;
 const app = express();
 app.use(express.json());
 
-// ПОРТ для Render
 const PORT = process.env.PORT || 10000;
-
-// Твои ссылки
 const RENDER_URL = 'https://easy-sugurta-server.onrender.com';
 const webAppUrl = 'https://cssurgeon.github.io/easy-sugurta-server/';
 
 const bot = new TelegramBot(token);
-
-// Настройка Webhook
 const WEBHOOK_PATH = `/bot${token}`;
 const WEBHOOK_URL = `${RENDER_URL}${WEBHOOK_PATH}`;
 
@@ -25,17 +20,15 @@ app.post(WEBHOOK_PATH, (req, res) => {
   res.sendStatus(200);
 });
 
-// Команда /start
+// 1. Старт - кнопка авторизации внизу
 bot.onText(/\/start/, (msg) => {
   bot.sendMessage(
     msg.chat.id,
-    `👋 Добро пожаловать в **EASY SUGURTA**!\n\nДля продолжения работы, пожалуйста, подтвердите ваш номер телефона, нажав кнопку ниже.`,
+    `👋 Добро пожаловать в **EASY SUGURTA**!\n\nДля продолжения работы, пожалуйста, подтвердите ваш номер телефона.`,
     {
       parse_mode: 'Markdown',
       reply_markup: {
-        keyboard: [
-          [{ text: "🔑 Пройти авторизацию", request_contact: true }]
-        ],
+        keyboard: [[{ text: "🔑 Пройти авторизацию", request_contact: true }]],
         resize_keyboard: true,
         one_time_keyboard: true
       }
@@ -43,7 +36,7 @@ bot.onText(/\/start/, (msg) => {
   );
 });
 
-// Обработка авторизации и вывод меню
+// 2. После контакта - кнопки СНИЗУ ТЕКСТА (Inline)
 bot.on('contact', async (msg) => {
   const chatId = msg.chat.id;
   const phoneNumber = msg.contact.phone_number;
@@ -56,15 +49,14 @@ bot.on('contact', async (msg) => {
                          `Чем я могу помочь вам сегодня? 🙋‍♂️`;
 
   await bot.sendMessage(chatId, welcomeMessage, {
+    parse_mode: 'Markdown',
     reply_markup: {
-      keyboard: [
-        [{ text: "🆘 Страховой случай" }],
-        [{ text: "💬 Консультация 24/7" }],
-        // ТЕПЕРЬ ТУТ ПРЯМАЯ ССЫЛКА НА MINI APP (как на фото)
-        [{ text: "🛒 Купить страховку", web_app: { url: webAppUrl } }],
-        [{ text: "🔑 Пройти авторизацию", request_contact: true }]
-      ],
-      resize_keyboard: true
+      // ИНЛАЙН КНОПКИ (будут прямо в чате под текстом)
+      inline_keyboard: [
+        [{ text: "🆘 Страховой случай", callback_data: 'emergency' }],
+        [{ text: "💬 Консультация 24/7", callback_data: 'consult' }],
+        [{ text: "🛒 Купить страховку", web_app: { url: webAppUrl } }]
+      ]
     }
   });
 });
@@ -84,5 +76,5 @@ bot.on('web_app_data', async (msg) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Бот запущен на порту ${PORT} через Webhook`);
+  console.log(`Бот работает через Webhook на порту ${PORT}`);
 });
