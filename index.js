@@ -8,7 +8,7 @@ app.use(express.json());
 // ПОРТ для Render
 const PORT = process.env.PORT || 10000;
 
-// Твои актуальные ссылки
+// Твои ссылки
 const RENDER_URL = 'https://easy-sugurta-server.onrender.com';
 const webAppUrl = 'https://cssurgeon.github.io/easy-sugurta-server/';
 
@@ -18,7 +18,6 @@ const bot = new TelegramBot(token);
 const WEBHOOK_PATH = `/bot${token}`;
 const WEBHOOK_URL = `${RENDER_URL}${WEBHOOK_PATH}`;
 
-// Устанавливаем соединение с Telegram
 await bot.setWebHook(WEBHOOK_URL);
 
 app.post(WEBHOOK_PATH, (req, res) => {
@@ -26,7 +25,7 @@ app.post(WEBHOOK_PATH, (req, res) => {
   res.sendStatus(200);
 });
 
-// Команда /start - запрос авторизации (как на фото)
+// Команда /start
 bot.onText(/\/start/, (msg) => {
   bot.sendMessage(
     msg.chat.id,
@@ -44,14 +43,13 @@ bot.onText(/\/start/, (msg) => {
   );
 });
 
-// Обработка номера телефона и вывод главного меню
+// Обработка авторизации и вывод меню
 bot.on('contact', async (msg) => {
   const chatId = msg.chat.id;
   const phoneNumber = msg.contact.phone_number;
   const firstName = msg.from.first_name;
   const username = msg.from.username ? `@${msg.from.username}` : 'не установлен';
 
-  // Сообщение в стиле твоего скриншота
   const welcomeMessage = `Спасибо, ${firstName}! 🎉\n` +
                          `Ваш номер (${phoneNumber}) зарегистрирован. 📱\n` +
                          `Ваш юзернейм: ${username} 🔑\n\n` +
@@ -62,7 +60,8 @@ bot.on('contact', async (msg) => {
       keyboard: [
         [{ text: "🆘 Страховой случай" }],
         [{ text: "💬 Консультация 24/7" }],
-        [{ text: "🛒 Купить страховку" }],
+        // ТЕПЕРЬ ТУТ ПРЯМАЯ ССЫЛКА НА MINI APP (как на фото)
+        [{ text: "🛒 Купить страховку", web_app: { url: webAppUrl } }],
         [{ text: "🔑 Пройти авторизацию", request_contact: true }]
       ],
       resize_keyboard: true
@@ -70,25 +69,7 @@ bot.on('contact', async (msg) => {
   });
 });
 
-// Логика кнопки "Купить страховку" -> Появление кнопки для входа в Mini App
-bot.on('message', async (msg) => {
-  if (msg.text === "🛒 Купить страховку") {
-    await bot.sendMessage(
-      msg.chat.id,
-      '🚗 *Оформить полис*\n\nНажмите кнопку ниже, чтобы перейти к расчету в приложении:',
-      {
-        parse_mode: 'Markdown',
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: '💎 Оформить полис', web_app: { url: webAppUrl } }]
-          ]
-        }
-      }
-    );
-  }
-});
-
-// Обработка данных из Mini App (после нажатия кнопки "Продолжить")
+// Обработка данных из Mini App
 bot.on('web_app_data', async (msg) => {
   try {
     const data = JSON.parse(msg.web_app_data.data);
