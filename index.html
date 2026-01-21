@@ -37,7 +37,6 @@
         .header { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
         .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         
-        /* Стили для логотипа EASY SUGURTA */
         .logo-container { display: flex; flex-direction: column; line-height: 1; }
         .logo-easy { font-size: 26px; font-weight: 900; color: #004a80; letter-spacing: -1px; }
         .logo-sugurta { font-size: 16px; font-weight: 300; color: var(--gray-text); margin-top: -2px; }
@@ -89,9 +88,25 @@
 
         .calc-res { display: block; text-align: left; margin-top: 10px; }
         .price-big { font-size: 28px; font-weight: 800; margin: 8px 0 24px 0; }
+
+        /* Стили для модального окна Diqqat */
+        #modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+        .modal-box { position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); width: 90%; background: var(--card-bg); border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .modal-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 18px; margin-bottom: 15px; }
+        .modal-body { font-size: 14px; line-height: 1.4; margin-bottom: 20px; }
     </style>
 </head>
 <body id="main-body">
+
+    <div id="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header"><span id="txt-modal-title">DIQQAT!</span> <span onclick="closeModal()" style="cursor:pointer">✕</span></div>
+            <div class="modal-body" id="txt-modal-body">
+                Sizning e'tiboringizni shunga qaratamizki, transport vositasini boshqarishga ruxsat berilgan shaxslarning soni cheklangan elektron sug'urta polisini (e-polisni) qayta rasmiylashtirishda texnik cheklovlar munosabati bilan, Siz keyinchalik zarurat bo'lganida polisga yangi haydovchilarni kiritish/qo'shishni amalga oshiromaysiz.
+            </div>
+            <button class="btn-main" onclick="closeModal()" id="txt-modal-btn">Tushunarlu</button>
+        </div>
+    </div>
 
     <div class="header">
         <div class="header-top">
@@ -111,13 +126,19 @@
 
     <div id="screen-form">
         <h2 id="txt-title">ОСАГО</h2>
-        <div class="section-title" id="txt-subtitle">Транспортное средство</div>
-
         <div class="card">
             <div class="region-toggle">
                 <span class="region-text" id="txt-region">Зарегистрирован в г.Ташкент или обл.</span>
                 <label class="switch">
                     <input type="checkbox" id="region-checkbox" checked onchange="updateLivePrice()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="region-toggle">
+                <span class="region-text" id="txt-driver-limit">Количество водителей: <b id="driver-label">Ограничено</b></span>
+                <label class="switch">
+                    <input type="checkbox" id="driver-unlimited" onchange="toggleDrivers()">
                     <span class="slider"></span>
                 </label>
             </div>
@@ -163,42 +184,15 @@
         </div>
     </div>
 
-    <h3 style="margin: 24px 0 16px 8px;" id="txt-faq-title">Часто задаваемые вопросы (FAQ)</h3>
+    <h3 style="margin: 24px 0 16px 8px;" id="txt-faq-title">FAQ</h3>
     <div class="card" style="padding: 0 20px; margin-bottom: 40px;">
         <div class="faq-item" onclick="toggleFaq(0)">
             <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q1">Почему это важно</span></div>
             <div id="faq-0" class="faq-content">
                 <ul>
-                    <li id="faq-a1-1">По закону полис ОСАГО является обязательным для каждого автовладельца.</li>
-                    <li>Покрывает вред жизни и здоровью, а также ущерб имуществу третьих лиц.</li>
-                    <li>Действует на всей территории Республики Узбекистан.</li>
+                    <li id="faq-a1-1">По закону полис ОСАГО является обязательным.</li>
+                    <li>Покрывает вред жизни и здоровью (52 млн) и имуществу (28 млн).</li>
                 </ul>
-            </div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(1)">
-            <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q2">Преимущества страхования</span></div>
-            <div id="faq-1" class="faq-content">
-                <ul>
-                    <li id="faq-a2-1"><b>Удобное использование:</b> Электронный полис в смартфоне.</li>
-                    <li id="faq-a2-2"><b>Полностью онлайн:</b> Покупка и продление без визита в офис.</li>
-                </ul>
-            </div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(2)">
-            <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q3">Условия страхования</span></div>
-            <div id="faq-2" class="faq-content">
-                <ul>
-                    <li>Общая страховая сумма (с 2026 г.): <b>80 000 000 сум</b>.</li>
-                    <li>Лимит на жизнь и здоровье: <b>52 000 000 сум</b>.</li>
-                    <li>Лимит на имущество: <b>28 000 000 сум</b>.</li>
-                    <li style="color: gray; margin-top: 5px;">Ранее лимит составлял 40 000 000 сум.</li>
-                </ul>
-            </div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(3)">
-            <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q4">Что такое европротокол?</span></div>
-            <div id="faq-3" class="faq-content">
-                Это упрощённый способ оформления ДТП без вызова сотрудников ГУБДД при отсутствии пострадавших.
             </div>
         </div>
     </div>
@@ -209,46 +203,48 @@
 
         const translations = {
             ru: {
-                title: "ОСАГО", subtitle: "Транспортное средство", region: "Зарегистрирован в г.Ташкент или обл.", vtype: "Тип транспорта", carnum: "Номер машины",
-                seria: "Серия", tpnum: "Номер техпаспорта", faq_title: "Часто задаваемые вопросы (FAQ)",
-                q1: "Почему это важно", q2: "Преимущества страхования", q3: "Условия страхования", q4: "Что такое европротокол?",
-                calc: "Расчет", cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
+                title: "ОСАГО", region: "Зарегистрирован в г.Ташкент или обл.", dr_limit: "Количество водителей: ",
+                lim_text: "Ограничено", unlim_text: "Без ограничений",
+                modal_t: "ВНИМАНИЕ!", modal_b: "Обращаем ваше внимание, что при выборе ограниченного количества водителей вы не сможете добавить новых позже из-за технических ограничений системы.",
+                modal_btn: "Понятно", find: "Найти", faq_title: "FAQ", calc: "Расчет", cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
                 opt1: "Легковые автомобили", opt2: "Грузовые автомобили", opt3: "Автобусы", opt4: "Мотоциклы"
             },
             uz: {
-                title: "O'SAGO", subtitle: "Transport vositasi", region: "Toshkent sh. yoki viloyatida ro'yxatga olingan", vtype: "Transport turi", carnum: "Mashina raqami",
-                seria: "Seriya", tpnum: "Tex-pasport raqami", faq_title: "Ko'p beriladigan savollar (FAQ)",
-                q1: "Nega bu muhim", q2: "Sug'urta afzalliklari", q3: "Sug'urta shartlari", q4: "Evroprotokol nima?",
-                calc: "Hisob-kitob", cover: "Qoplama summasi", sum: "To'lov summasi", cont: "Davom etish",
+                title: "O'SAGO", region: "Toshkent sh. yoki viloyatida ro'yxatga olingan", dr_limit: "Haydovchilar soni: ",
+                lim_text: "Cheklangan", unlim_text: "Cheklanmagan",
+                modal_t: "DIQQAT!", modal_b: "Shuni ma'lum qilamizki, haydovchilar soni cheklangan polislarda keyinchalik yangi haydovchilarni qo'shish imkoniyati mavjud emas.",
+                modal_btn: "Tushunarlu", find: "Topish", faq_title: "Ko'p beriladigan savollar", calc: "Hisob-kitob", cover: "Qoplama summasi", sum: "To'lov summasi", cont: "Davom etish",
                 opt1: "Yengil avtomobillar", opt2: "Yuk avtomobillari", opt3: "Avtobuslar", opt4: "Mototsikllar"
+            },
+            en: {
+                title: "MTPL", region: "Registered in Tashkent city or region", dr_limit: "Number of drivers: ",
+                lim_text: "Limited", unlim_text: "Unlimited",
+                modal_t: "ATTENTION!", modal_b: "Please note that if you select a limited number of drivers, you will not be able to add new drivers later due to system limitations.",
+                modal_btn: "Understood", find: "Find", faq_title: "FAQ", calc: "Calculation", cover: "Coverage", sum: "Total", cont: "Continue",
+                opt1: "Passenger cars", opt2: "Trucks", opt3: "Bus", opt4: "Motorcycles"
             }
         };
 
-        function toggleTheme() {
-            document.getElementById('main-body').classList.toggle('dark-mode');
-            tg.HapticFeedback.impactOccurred('light');
-        }
+        let currentLang = 'ru';
+
+        function toggleTheme() { document.getElementById('main-body').classList.toggle('dark-mode'); tg.HapticFeedback.impactOccurred('light'); }
 
         function changeLang(lang) {
+            currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('lang-' + lang).classList.add('active');
             const t = translations[lang];
             document.getElementById('txt-title').innerText = t.title;
-            document.getElementById('txt-subtitle').innerText = t.subtitle;
             document.getElementById('txt-region').innerText = t.region;
-            document.getElementById('txt-vtype').innerText = t.vtype;
-            document.getElementById('txt-carnum').innerText = t.carnum;
-            document.getElementById('txt-seria').innerText = t.seria;
-            document.getElementById('txt-tpnum').innerText = t.tpnum;
+            document.getElementById('txt-driver-limit').innerHTML = t.dr_limit + `<b id="driver-label">${document.getElementById('driver-unlimited').checked ? t.unlim_text : t.lim_text}</b>`;
+            document.getElementById('txt-modal-title').innerText = t.modal_t;
+            document.getElementById('txt-modal-body').innerText = t.modal_b;
+            document.getElementById('txt-modal-btn').innerText = t.modal_btn;
             document.getElementById('txt-faq-title').innerText = t.faq_title;
             document.getElementById('txt-calc').innerText = t.calc;
             document.getElementById('txt-cover').innerText = t.cover;
             document.getElementById('txt-sum').innerText = t.sum;
             document.getElementById('btn-cont').innerText = t.cont;
-            document.getElementById('faq-q1').innerText = t.q1;
-            document.getElementById('faq-q2').innerText = t.q2;
-            document.getElementById('faq-q3').innerText = t.q3;
-            document.getElementById('faq-q4').innerText = t.q4;
             document.getElementById('opt-1').innerText = t.opt1;
             document.getElementById('opt-2').innerText = t.opt2;
             document.getElementById('opt-3').innerText = t.opt3;
@@ -256,40 +252,44 @@
             tg.HapticFeedback.selectionChanged();
         }
 
-        function toggleFaq(id) {
-            const el = document.getElementById('faq-' + id);
-            const isVisible = el.style.display === 'block';
-            el.style.display = isVisible ? 'none' : 'block';
-            document.querySelectorAll('.faq-icon')[id].innerText = isVisible ? '+' : '−';
+        function toggleDrivers() {
+            const isUnlimited = document.getElementById('driver-unlimited').checked;
+            document.getElementById('driver-label').innerText = isUnlimited ? translations[currentLang].unlim_text : translations[currentLang].lim_text;
+            if (!isUnlimited) {
+                document.getElementById('modal-overlay').style.display = 'block';
+            }
+            updateLivePrice();
         }
 
-        /* ОБНОВЛЕННАЯ ЛОГИКА РАСЧЕТА С НОВЫМИ ЦЕНАМИ */
+        function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
+
+        function toggleFaq(id) {
+            const el = document.getElementById('faq-' + id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
         function updateLivePrice() {
             const isTashkent = document.getElementById('region-checkbox').checked;
+            const isUnlimited = document.getElementById('driver-unlimited').checked;
             const vehicleType = document.getElementById('v-type').value;
             let priceValue = 0;
 
-            // Цены согласно предоставленному списку
-            if (vehicleType === "passenger") {
-                priceValue = isTashkent ? 192000 : 160000;
-            } else if (vehicleType === "truck") {
-                priceValue = isTashkent ? 336000 : 280000;
-            } else if (vehicleType === "bus") {
-                priceValue = isTashkent ? 384000 : 320000;
-            } else if (vehicleType === "moto") {
-                priceValue = isTashkent ? 72000 : 60000;
-            }
+            // Базовые цены Ограничено (Limited)
+            if (vehicleType === "passenger") priceValue = isTashkent ? 192000 : 160000;
+            else if (vehicleType === "truck") priceValue = isTashkent ? 336000 : 280000;
+            else if (vehicleType === "bus") priceValue = isTashkent ? 384000 : 320000;
+            else if (vehicleType === "moto") priceValue = isTashkent ? 72000 : 60000;
+
+            // Если Без ограничений (Unlimited) - цена умножается на 2
+            if (isUnlimited) priceValue = priceValue * 2;
 
             document.getElementById('final-price-display').innerText = priceValue.toLocaleString('ru-RU') + ",00 сўм";
             tg.HapticFeedback.selectionChanged();
         }
 
         function sendData() {
-            if(!document.getElementById('car-num').value) return tg.showAlert("Error: Enter car number");
-            tg.sendData(JSON.stringify({
-                car: document.getElementById('car-num').value,
-                price: document.getElementById('final-price-display').innerText
-            }));
+            if(!document.getElementById('car-num').value) return tg.showAlert("Enter car number");
+            tg.sendData(JSON.stringify({ car: document.getElementById('car-num').value, price: document.getElementById('final-price-display').innerText }));
             tg.close();
         }
 
