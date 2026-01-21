@@ -37,7 +37,7 @@
         .header { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
         .header-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         
-        /* Стили для логотипа как на фото */
+        /* Стили для логотипа EASY SUGURTA */
         .logo-container { display: flex; flex-direction: column; line-height: 1; }
         .logo-easy { font-size: 26px; font-weight: 900; color: #004a80; letter-spacing: -1px; }
         .logo-sugurta { font-size: 16px; font-weight: 300; color: var(--gray-text); margin-top: -2px; }
@@ -127,8 +127,8 @@
                 <select id="v-type" onchange="updateLivePrice()">
                     <option value="passenger" id="opt-1">Легковые автомобили</option>
                     <option value="truck" id="opt-2">Грузовые автомобили</option>
-                    <option value="bus" id="opt-3">Автобус или микроавтобус</option>
-                    <option value="other" id="opt-4">Другие</option>
+                    <option value="bus" id="opt-3">Автобусы</option>
+                    <option value="moto" id="opt-4">Мотоциклы</option>
                 </select>
             </div>
 
@@ -169,7 +169,9 @@
             <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q1">Почему это важно</span></div>
             <div id="faq-0" class="faq-content">
                 <ul>
-                    <li id="faq-a1-1">По закону полис ОСАГО является обязательным для каждого автовладельца и покрывает ущерб другим участникам ДТП.</li>
+                    <li id="faq-a1-1">По закону полис ОСАГО является обязательным для каждого автовладельца.</li>
+                    <li>Покрывает вред жизни и здоровью, а также ущерб имуществу третьих лиц.</li>
+                    <li>Действует на всей территории Республики Узбекистан.</li>
                 </ul>
             </div>
         </div>
@@ -186,8 +188,10 @@
             <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q3">Условия страхования</span></div>
             <div id="faq-2" class="faq-content">
                 <ul>
-                    <li id="faq-a3-1"><b>28 000 000 сум</b> - ущерб чужому имуществу.</li>
-                    <li id="faq-a3-2"><b>52 000 000 сум</b> - ущерб жизни или здоровью.</li>
+                    <li>Общая страховая сумма (с 2026 г.): <b>80 000 000 сум</b>.</li>
+                    <li>Лимит на жизнь и здоровье: <b>52 000 000 сум</b>.</li>
+                    <li>Лимит на имущество: <b>28 000 000 сум</b>.</li>
+                    <li style="color: gray; margin-top: 5px;">Ранее лимит составлял 40 000 000 сум.</li>
                 </ul>
             </div>
         </div>
@@ -195,12 +199,6 @@
             <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q4">Что такое европротокол?</span></div>
             <div id="faq-3" class="faq-content">
                 Это упрощённый способ оформления ДТП без вызова сотрудников ГУБДД при отсутствии пострадавших.
-            </div>
-        </div>
-        <div class="faq-item" onclick="toggleFaq(4)">
-            <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q5">Вопросы и ответы</span></div>
-            <div id="faq-4" class="faq-content">
-                Оформить полис можно онлайн — быстро и надёжно. Электронный полис юридически равен бумажному.
             </div>
         </div>
     </div>
@@ -212,24 +210,17 @@
         const translations = {
             ru: {
                 title: "ОСАГО", subtitle: "Транспортное средство", region: "Зарегистрирован в г.Ташкент или обл.", vtype: "Тип транспорта", carnum: "Номер машины",
-                seria: "Серия", tpnum: "Номер техпаспорта", find: "Найти", faq_title: "Часто задаваемые вопросы (FAQ)",
-                q1: "Почему это важно", q2: "Преимущества страхования", q3: "Условия страхования", q4: "Что такое европротокол?", q5: "Вопросы и ответы",
+                seria: "Серия", tpnum: "Номер техпаспорта", faq_title: "Часто задаваемые вопросы (FAQ)",
+                q1: "Почему это важно", q2: "Преимущества страхования", q3: "Условия страхования", q4: "Что такое европротокол?",
                 calc: "Расчет", cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
-                opt1: "Легковые автомобили", opt2: "Грузовые автомобили", opt3: "Автобус или микроавтобус", opt4: "Другие"
+                opt1: "Легковые автомобили", opt2: "Грузовые автомобили", opt3: "Автобусы", opt4: "Мотоциклы"
             },
             uz: {
                 title: "O'SAGO", subtitle: "Transport vositasi", region: "Toshkent sh. yoki viloyatida ro'yxatga olingan", vtype: "Transport turi", carnum: "Mashina raqami",
-                seria: "Seriya", tpnum: "Tex-pasport raqami", find: "Topish", faq_title: "Ko'p beriladigan savollar (FAQ)",
-                q1: "Nega bu muhim", q2: "Sug'urta afzalliklari", q3: "Sug'urta shartlari", q4: "Evroprotokol nima?", q5: "Savol va javoblar",
+                seria: "Seriya", tpnum: "Tex-pasport raqami", faq_title: "Ko'p beriladigan savollar (FAQ)",
+                q1: "Nega bu muhim", q2: "Sug'urta afzalliklari", q3: "Sug'urta shartlari", q4: "Evroprotokol nima?",
                 calc: "Hisob-kitob", cover: "Qoplama summasi", sum: "To'lov summasi", cont: "Davom etish",
-                opt1: "Yengil avtomobillar", opt2: "Yuk avtomobillari", opt3: "Avtobus yoki mikroavtobus", opt4: "Boshqalar"
-            },
-            en: {
-                title: "MTPL", subtitle: "Vehicle", region: "Registered in Tashkent city or region", vtype: "Vehicle type", carnum: "Car number",
-                seria: "Series", tpnum: "Registration number", find: "Find", faq_title: "Frequently Asked Questions (FAQ)",
-                q1: "Why is it important", q2: "Insurance benefits", q3: "Insurance terms", q4: "What is Europrotocol?", q5: "Questions and answers",
-                calc: "Calculation", cover: "Coverage amount", sum: "Payment amount", cont: "Continue",
-                opt1: "Passenger cars", opt2: "Trucks", opt3: "Bus or minibus", opt4: "Others"
+                opt1: "Yengil avtomobillar", opt2: "Yuk avtomobillari", opt3: "Avtobuslar", opt4: "Mototsikllar"
             }
         };
 
@@ -258,7 +249,6 @@
             document.getElementById('faq-q2').innerText = t.q2;
             document.getElementById('faq-q3').innerText = t.q3;
             document.getElementById('faq-q4').innerText = t.q4;
-            document.getElementById('faq-q5').innerText = t.q5;
             document.getElementById('opt-1').innerText = t.opt1;
             document.getElementById('opt-2').innerText = t.opt2;
             document.getElementById('opt-3').innerText = t.opt3;
@@ -273,19 +263,21 @@
             document.querySelectorAll('.faq-icon')[id].innerText = isVisible ? '+' : '−';
         }
 
+        /* ОБНОВЛЕННАЯ ЛОГИКА РАСЧЕТА С НОВЫМИ ЦЕНАМИ */
         function updateLivePrice() {
             const isTashkent = document.getElementById('region-checkbox').checked;
             const vehicleType = document.getElementById('v-type').value;
             let priceValue = 0;
 
+            // Цены согласно предоставленному списку
             if (vehicleType === "passenger") {
                 priceValue = isTashkent ? 192000 : 160000;
             } else if (vehicleType === "truck") {
-                priceValue = isTashkent ? 320000 : 280000;
+                priceValue = isTashkent ? 336000 : 280000;
             } else if (vehicleType === "bus") {
-                priceValue = isTashkent ? 250000 : 210000;
-            } else {
-                priceValue = isTashkent ? 150000 : 120000;
+                priceValue = isTashkent ? 384000 : 320000;
+            } else if (vehicleType === "moto") {
+                priceValue = isTashkent ? 72000 : 60000;
             }
 
             document.getElementById('final-price-display').innerText = priceValue.toLocaleString('ru-RU') + ",00 сўм";
