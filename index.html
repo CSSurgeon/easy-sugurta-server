@@ -91,20 +91,19 @@
 
         /* Стили для модального окна Diqqat */
         #modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 1000; }
-        .modal-box { position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); width: 90%; background: var(--card-bg); border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .modal-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 18px; margin-bottom: 15px; }
-        .modal-body { font-size: 14px; line-height: 1.4; margin-bottom: 20px; }
+        .modal-box { position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); width: 90%; background: var(--card-bg); border-radius: 24px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 18px; margin-bottom: 15px; color: #ff3b30; }
+        .modal-body { font-size: 14px; line-height: 1.5; margin-bottom: 20px; white-space: pre-wrap; }
     </style>
 </head>
 <body id="main-body">
 
     <div id="modal-overlay">
         <div class="modal-box">
-            <div class="modal-header"><span id="txt-modal-title">DIQQAT!</span> <span onclick="closeModal()" style="cursor:pointer">✕</span></div>
+            <div class="modal-header"><span id="txt-modal-title">⚠️ ВНИМАНИЕ!</span> <span onclick="closeModal()" style="cursor:pointer">✕</span></div>
             <div class="modal-body" id="txt-modal-body">
-                Sizning e'tiboringizni shunga qaratamizki, transport vositasini boshqarishga ruxsat berilgan shaxslarning soni cheklangan elektron sug'urta polisini (e-polisni) qayta rasmiylashtirishda texnik cheklovlar munosabati bilan, Siz keyinchalik zarurat bo'lganida polisga yangi haydovchilarni kiritish/qo'shishni amalga oshiromaysiz.
-            </div>
-            <button class="btn-main" onclick="closeModal()" id="txt-modal-btn">Tushunarlu</button>
+                </div>
+            <button class="btn-main" onclick="closeModal()" id="txt-modal-btn">Понятно</button>
         </div>
     </div>
 
@@ -195,6 +194,16 @@
                 </ul>
             </div>
         </div>
+        <div class="faq-item" onclick="toggleFaq(1)">
+            <div class="faq-header"><span class="faq-icon">+</span> <span id="faq-q2">Условия страхования</span></div>
+            <div id="faq-1" class="faq-content">
+                <ul>
+                    <li>Общая сумма покрытия: <b>80 000 000 сум</b>.</li>
+                    <li>На жизнь и здоровье: <b>52 000 000 сум</b>.</li>
+                    <li>На имущество: <b>28 000 000 сум</b>.</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -205,21 +214,24 @@
             ru: {
                 title: "ОСАГО", region: "Зарегистрирован в г.Ташкент или обл.", dr_limit: "Количество водителей: ",
                 lim_text: "Ограничено", unlim_text: "Без ограничений",
-                modal_t: "ВНИМАНИЕ!", modal_b: "Обращаем ваше внимание, что при выборе ограниченного количества водителей вы не сможете добавить новых позже из-за технических ограничений системы.",
-                modal_btn: "Понятно", find: "Найти", faq_title: "FAQ", calc: "Расчет", cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
+                modal_t: "⚠️ Важно про ОСАГО с ограниченным списком водителей", 
+                modal_b: "• Водителей нужно указать сразу — после оформления добавить нельзя.\n• Управлять автомобилем могут только водители, указанные в полисе.\n• Перегон автомобиля запрещён, если водитель не вписан в полис.\n• Если за рулём будет человек не из полиса, страховка не действует, возможен отказ в выплате.\n\n👉 Если машиной будут пользоваться разные водители — оформляйте ОСАГО без ограничений.",
+                modal_btn: "Понял", find: "Найти", faq_title: "FAQ", calc: "Расчет", cover: "Сумма покрытия", sum: "Сумма оплаты", cont: "Продолжить",
                 opt1: "Легковые автомобили", opt2: "Грузовые автомобили", opt3: "Автобусы", opt4: "Мотоциклы"
             },
             uz: {
                 title: "O'SAGO", region: "Toshkent sh. yoki viloyatida ro'yxatga olingan", dr_limit: "Haydovchilar soni: ",
                 lim_text: "Cheklangan", unlim_text: "Cheklanmagan",
-                modal_t: "DIQQAT!", modal_b: "Shuni ma'lum qilamizki, haydovchilar soni cheklangan polislarda keyinchalik yangi haydovchilarni qo'shish imkoniyati mavjud emas.",
+                modal_t: "⚠️ Haydovchilar cheklangan ОСАГО haqida muhim ma’lumot", 
+                modal_b: "• Haydovchilarni darhol ko‘rsatish kerak — rasmiylashtirilgandan keyin qo‘shib bo‘lmaydi.\n• Avtomobilni faqat polisda ko‘rsatilgan haydovchilar boshqarishi mumkin.\n• Agar haydovchi polisda bo‘lmasa, avtomobilni haydab olib borish (peregon) taqiqlanadi.\n• Agar rulda polisda ko‘rsatilmagan shaxs bo‘lsa, sug‘urta amal qilmaydi, to‘lov rad etilishi mumkin.\n\n👉 Agar avtomobildan bir nechta haydovchi foydalansa — cheklovsiz ОСАГО rasmiylashtiring.",
                 modal_btn: "Tushunarlu", find: "Topish", faq_title: "Ko'p beriladigan savollar", calc: "Hisob-kitob", cover: "Qoplama summasi", sum: "To'lov summasi", cont: "Davom etish",
                 opt1: "Yengil avtomobillar", opt2: "Yuk avtomobillari", opt3: "Avtobuslar", opt4: "Mototsikllar"
             },
             en: {
                 title: "MTPL", region: "Registered in Tashkent city or region", dr_limit: "Number of drivers: ",
                 lim_text: "Limited", unlim_text: "Unlimited",
-                modal_t: "ATTENTION!", modal_b: "Please note that if you select a limited number of drivers, you will not be able to add new drivers later due to system limitations.",
+                modal_t: "⚠️ Important information about limited OSAGO", 
+                modal_b: "• Drivers must be specified during purchase — you cannot add drivers later.\n• Only drivers listed in the policy are allowed to drive the vehicle.\n• Car transfer (delivery) is not allowed if the driver is not included in the policy.\n• If a non-listed driver is driving, the insurance is not valid and the claim may be denied.\n\n👉 If multiple drivers will use the car — choose OSAGO without driver limits.",
                 modal_btn: "Understood", find: "Find", faq_title: "FAQ", calc: "Calculation", cover: "Coverage", sum: "Total", cont: "Continue",
                 opt1: "Passenger cars", opt2: "Trucks", opt3: "Bus", opt4: "Motorcycles"
             }
@@ -274,13 +286,11 @@
             const vehicleType = document.getElementById('v-type').value;
             let priceValue = 0;
 
-            // Базовые цены Ограничено (Limited)
             if (vehicleType === "passenger") priceValue = isTashkent ? 192000 : 160000;
             else if (vehicleType === "truck") priceValue = isTashkent ? 336000 : 280000;
             else if (vehicleType === "bus") priceValue = isTashkent ? 384000 : 320000;
             else if (vehicleType === "moto") priceValue = isTashkent ? 72000 : 60000;
 
-            // Если Без ограничений (Unlimited) - цена умножается на 2
             if (isUnlimited) priceValue = priceValue * 2;
 
             document.getElementById('final-price-display').innerText = priceValue.toLocaleString('ru-RU') + ",00 сўм";
