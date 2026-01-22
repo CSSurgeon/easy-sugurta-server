@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils import executor
 
-TOKEN = "PUT_YOUR_NEW_TOKEN_HERE"
+TOKEN = "8282187260:AAF2UJHLBYkFccp2UWK5vFPOCRyCzyGuB5M"
 ADMIN_ID = 1811483526
 WEBAPP_URL = "https://cssurgeon.github.io/easy-sugurta-server/"
 
