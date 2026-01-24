@@ -312,4 +312,3 @@ function toggleApplicantFields() {
         fields.style.display = isOwner ? 'none' : 'block';
     }
 }
-
