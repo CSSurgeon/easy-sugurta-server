@@ -1,263 +1,773 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="OSAGO registration — instantly. Electronic insurance policy online. Official and secure.">
-    <title>OSAGO registration — instantly | EASY sugurta</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>EASY sugurta - Простое и понятное страхование</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="canonical" href="https://easysugurta.uz">
 </head>
 
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <a href="/" class="logo">
-                    <img src="assets/logo.png" alt="EASY sugurta">
-                </a>
-                <nav class="nav">
-                    <ul class="nav-list">
-                        <li><a href="#osago">OSAGO</a></li>
-                        <li><a href="#other">Other insurance</a></li>
-                        <li><a href="#verify">Verify policy</a></li>
-                    </ul>
-                </nav>
-                <button class="burger" aria-label="Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+        <div class="container header-container">
+            <div class="logo">
+                <span class="logo-bold">EASY</span>
+                <span class="logo-light">SUGURTA</span>
             </div>
+            <nav class="nav">
+                <a href="#" class="nav-link btn-header-cta" onclick="openWizard()" data-i18n="header_btn_buy">Купить
+                    ОСАГО</a>
+                <div class="lang-switcher">
+                    <a href="#" class="lang" onclick="setLanguage('uz')">UZ</a> |
+                    <a href="#" class="lang" onclick="setLanguage('ru')">RU</a> |
+                    <a href="#" class="lang" onclick="setLanguage('en')">EN</a>
+                </div>
+            </nav>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu">
-        <ul>
-            <li><a href="#osago">OSAGO</a></li>
-            <li><a href="#other">Other insurance</a></li>
-            <li><a href="#verify">Verify policy</a></li>
-        </ul>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-menu">
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <div class="logo">
+                    <span class="logo-bold">EASY</span>
+                    <span class="logo-light">SUGURTA</span>
+                </div>
+                <button class="mobile-menu-close" onclick="toggleMobileMenu()">&times;</button>
+            </div>
+            <div class="mobile-menu-links">
+                <a href="#" onclick="toggleMobileMenu(); openWizard();" class="mobile-nav-link"
+                    data-i18n="header_btn_buy">Купить ОСАГО</a>
+                <a href="#products" onclick="toggleMobileMenu();" class="mobile-nav-link"
+                    data-i18n="products_title">Продукты</a>
+                <a href="#start" onclick="toggleMobileMenu();" class="mobile-nav-link" data-i18n="choice_title">Как
+                    начать</a>
+            </div>
+            <div class="mobile-menu-lang">
+                <p>Выберите язык / Tilni tanlang</p>
+                <div class="lang-grid">
+                    <button onclick="setLanguage('uz'); toggleMobileMenu();" class="lang-btn">O'zbek</button>
+                    <button onclick="setLanguage('ru'); toggleMobileMenu();" class="lang-btn">Русский</button>
+                    <button onclick="setLanguage('en'); toggleMobileMenu();" class="lang-btn">English</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>OSAGO registration — instantly</h1>
-                    <p class="hero-subtitle">Electronic insurance policy online. Official and secure.</p>
-
-                    <div class="license-plate-wrapper">
-                        <div class="license-plate">
-                            <input type="text" id="licensePlate" placeholder="01 A 123 AA" maxlength="12"
-                                aria-label="License plate number">
-                            <div class="plate-flag">
-                                <img src="assets/uz-flag.svg" alt="UZ">
-                                <span class="plate-country">UZ</span>
+    <!-- Main Content (Hidden when Wizard is active) -->
+    <div id="main-landing">
+        <!-- Hero Section -->
+        <section class="hero-modern">
+            <div class="container">
+                <div class="hero-wrapper">
+                    <div class="hero-grid">
+                        <!-- Left: Text Content -->
+                        <div class="hero-content">
+                            <div class="hero-badge">Цифровое страхование</div>
+                            <h1 class="hero-heading" data-i18n="hero_heading">OSAGO registration — instantly</h1>
+                            <p class="hero-subheading">Свободный выбор страховой компании и оформление электронного
+                                полиса
+                                онлайн.</p>
+                            <div class="hero-quick-quote">
+                                <div class="plate-group">
+                                    <div class="plate-region-divider"></div>
+                                    <input type="text" id="hero_car_number" placeholder="01 A 123 AA"
+                                        class="plate-input">
+                                    <div class="plate-branding">
+                                        <svg class="plate-flag-svg" viewBox="0 0 60 30"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <!-- Blue stripe -->
+                                            <rect width="60" height="10" y="0" fill="#1EB53A" />
+                                            <!-- White stripe -->
+                                            <rect width="60" height="10" y="10" fill="#FFFFFF" />
+                                            <!-- Green stripe -->
+                                            <rect width="60" height="10" y="20" fill="#1EB53A" />
+                                            <!-- Red borders -->
+                                            <rect width="60" height="0.6" y="9.7" fill="#D52B1E" />
+                                            <rect width="60" height="0.6" y="19.7" fill="#D52B1E" />
+                                            <!-- Crescent moon (white circle with blue overlay) -->
+                                            <circle cx="8" cy="5" r="3.5" fill="#FFFFFF" />
+                                            <circle cx="9.2" cy="5" r="3.2" fill="#1EB53A" />
+                                            <!-- 12 stars in 3 rows -->
+                                            <g fill="#FFFFFF">
+                                                <!-- Row 1: 4 stars -->
+                                                <polygon
+                                                    points="15,3 15.3,4 16.2,4 15.5,4.5 15.8,5.3 15,4.8 14.2,5.3 14.5,4.5 13.8,4 14.7,4" />
+                                                <polygon
+                                                    points="19,3 19.3,4 20.2,4 19.5,4.5 19.8,5.3 19,4.8 18.2,5.3 18.5,4.5 17.8,4 18.7,4" />
+                                                <polygon
+                                                    points="23,3 23.3,4 24.2,4 23.5,4.5 23.8,5.3 23,4.8 22.2,5.3 22.5,4.5 21.8,4 22.7,4" />
+                                                <polygon
+                                                    points="27,3 27.3,4 28.2,4 27.5,4.5 27.8,5.3 27,4.8 26.2,5.3 26.5,4.5 25.8,4 26.7,4" />
+                                                <!-- Row 2: 4 stars -->
+                                                <polygon
+                                                    points="15,6 15.3,7 16.2,7 15.5,7.5 15.8,8.3 15,7.8 14.2,8.3 14.5,7.5 13.8,7 14.7,7" />
+                                                <polygon
+                                                    points="19,6 19.3,7 20.2,7 19.5,7.5 19.8,8.3 19,7.8 18.2,8.3 18.5,7.5 17.8,7 18.7,7" />
+                                                <polygon
+                                                    points="23,6 23.3,7 24.2,7 23.5,7.5 23.8,8.3 23,7.8 22.2,8.3 22.5,7.5 21.8,7 22.7,7" />
+                                                <polygon
+                                                    points="27,6 27.3,7 28.2,7 27.5,7.5 27.8,8.3 27,7.8 26.2,8.3 26.5,7.5 25.8,7 26.7,7" />
+                                                <!-- Row 3: 4 stars -->
+                                                <polygon
+                                                    points="15,9 15.3,10 16.2,10 15.5,10.5 15.8,11.3 15,10.8 14.2,11.3 14.5,10.5 13.8,10 14.7,10" />
+                                                <polygon
+                                                    points="19,9 19.3,10 20.2,10 19.5,10.5 19.8,11.3 19,10.8 18.2,11.3 18.5,10.5 17.8,10 18.7,10" />
+                                                <polygon
+                                                    points="23,9 23.3,10 24.2,10 23.5,10.5 23.8,11.3 23,10.8 22.2,11.3 22.5,10.5 21.8,10 22.7,10" />
+                                                <polygon
+                                                    points="27,9 27.3,10 28.2,10 27.5,10.5 27.8,11.3 27,10.8 26.2,11.3 26.5,10.5 25.8,10 26.7,10" />
+                                            </g>
+                                        </svg>
+                                        <div class="plate-uz">UZ</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-hero-cta" style="padding: 12px 24px;"
+                                    onclick="startQuickQuote()">Начать</button>
+                            </div>
+                            <div class="hero-trust">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                </svg>
+                                <span>Безопасно</span>
+                                <span class="trust-divider">•</span>
+                                <span>Официально</span>
                             </div>
                         </div>
-                        <button class="btn-primary">Calculate</button>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <img src="assets/car.png" alt="Car">
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Trust Indicators -->
-    <section class="trust-indicators">
-        <div class="container">
-            <div class="trust-grid">
-                <div class="trust-item">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                        <path d="M16 2L4 8v8c0 7.5 5.2 14.5 12 16 6.8-1.5 12-8.5 12-16V8L16 2z" stroke="currentColor"
-                            stroke-width="2" fill="none" />
-                        <path d="M12 16l3 3 6-6" stroke="currentColor" stroke-width="2" fill="none" />
-                    </svg>
-                    <p>Official policy</p>
-                </div>
-                <div class="trust-item">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                        <rect x="4" y="8" width="24" height="20" rx="2" stroke="currentColor" stroke-width="2"
-                            fill="none" />
-                        <path d="M10 8V6a6 6 0 0112 0v2" stroke="currentColor" stroke-width="2" fill="none" />
-                        <circle cx="16" cy="18" r="2" fill="currentColor" />
-                    </svg>
-                    <p>Database verification</p>
-                </div>
-                <div class="trust-item">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                        <rect x="6" y="10" width="20" height="16" rx="2" stroke="currentColor" stroke-width="2"
-                            fill="none" />
-                        <path d="M12 10V8a4 4 0 018 0v2" stroke="currentColor" stroke-width="2" fill="none" />
-                        <line x1="16" y1="18" x2="16" y2="20" stroke="currentColor" stroke-width="2" />
-                    </svg>
-                    <p>No office visit</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Insurance Categories -->
-    <section class="insurance-categories" id="osago">
-        <div class="container">
-            <h2>Insurance types</h2>
-            <div class="categories-grid">
-                <a href="#osago-calc" class="category-card">
-                    <h3>OSAGO</h3>
-                    <p>Mandatory car insurance</p>
-                </a>
-                <a href="#kasko" class="category-card">
-                    <h3>KASKO</h3>
-                    <p>Comprehensive car insurance</p>
-                </a>
-                <a href="#travel" class="category-card">
-                    <h3>Travel insurance</h3>
-                    <p>Coverage for trips abroad</p>
-                </a>
-                <a href="#documents" class="category-card">
-                    <h3>Document insurance</h3>
-                    <p>Protection for important documents</p>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Insurance Companies Rating -->
-    <section class="companies-rating">
-        <div class="container">
-            <h2>Insurance companies rating</h2>
-            <div class="companies-grid">
-                <div class="company-card">
-                    <h3>Uzbekinvest</h3>
-                    <div class="rating">
-                        <span class="stars">★★★★★</span>
-                    </div>
-                    <div class="company-stats">
-                        <div class="stat">
-                            <span class="stat-label">Positive payouts</span>
-                            <span class="stat-value positive">94%</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-label">Average payout time</span>
-                            <span class="stat-value">12 days</span>
+                        <!-- Right: Visual Card -->
+                        <div class="hero-visual">
+                            <div class="glass-card">
+                                <div class="glass-card-header">
+                                    <div class="car-icon">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1.5">
+                                            <path
+                                                d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2" />
+                                            <circle cx="6.5" cy="16.5" r="2.5" />
+                                            <circle cx="16.5" cy="16.5" r="2.5" />
+                                        </svg>
+                                    </div>
+                                    <div class="card-title">ОСАГО онлайн</div>
+                                </div>
+                                <div class="glass-card-steps">
+                                    <div class="step-item active">
+                                        <div class="step-number">1</div>
+                                        <div class="step-text">Данные авто</div>
+                                    </div>
+                                    <div class="step-item">
+                                        <div class="step-number">2</div>
+                                        <div class="step-text">Выбор компании</div>
+                                    </div>
+                                    <div class="step-item">
+                                        <div class="step-number">3</div>
+                                        <div class="step-text">Получение полиса</div>
+                                    </div>
+                                </div>
+                                <div class="glass-card-footer">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="company-card">
-                    <h3>Gross Insurance</h3>
-                    <div class="rating">
-                        <span class="stars">★★★★☆</span>
-                    </div>
-                    <div class="company-stats">
-                        <div class="stat">
-                            <span class="stat-label">Positive payouts</span>
-                            <span class="stat-value positive">89%</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-label">Average payout time</span>
-                            <span class="stat-value">15 days</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="company-card">
-                    <h3>Alfa Insurance</h3>
-                    <div class="rating">
-                        <span class="stars">★★★★☆</span>
-                    </div>
-                    <div class="company-stats">
-                        <div class="stat">
-                            <span class="stat-label">Positive payouts</span>
-                            <span class="stat-value positive">87%</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-label">Average payout time</span>
-                            <span class="stat-value">18 days</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="btn-secondary">Show all companies</button>
-            <p class="disclaimer">Data based on open statistics and customer reports.</p>
-        </div>
-    </section>
 
-    <!-- Security & Anti-Fraud -->
-    <section class="security">
-        <div class="container">
-            <h2>Important to know</h2>
-            <div class="security-list">
-                <div class="security-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-                        <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" />
-                    </svg>
-                    <p>We never request SMS codes</p>
-                </div>
-                <div class="security-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"
-                            stroke="currentColor" stroke-width="2" fill="none" />
-                        <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" />
-                    </svg>
-                    <p>We never call first</p>
-                </div>
-                <div class="security-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor"
-                            stroke-width="2" fill="none" />
-                        <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" fill="none" />
-                        <path d="M9 15l2 2 4-4" stroke="currentColor" stroke-width="2" fill="none" />
-                    </svg>
-                    <p>Policies can be officially verified</p>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <!-- Benefits Row -->
+                    <div class="hero-benefits">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                    <polyline points="2 17 12 22 22 17" />
+                                    <polyline points="2 12 12 17 22 12" />
+                                </svg>
+                            </div>
+                            <span>Выбор страховых компаний</span>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                            </div>
+                            <span>Оформление за несколько минут</span>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                </svg>
+                            </div>
+                            <span>Электронный официальный полис</span>
+                        </div>
 
-    <!-- Policy Verification -->
-    <section class="verification" id="verify">
-        <div class="container">
-            <div class="verification-content">
-                <h2>Verify your OSAGO policy</h2>
-                <p>Check the authenticity of your insurance policy in the official database</p>
-                <button class="btn-primary">Verify policy</button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>Contacts</h4>
-                    <p>+998 71 123 45 67</p>
-                    <p>info@easysugurta.uz</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal information</h4>
-                    <p>License: AB №1234567</p>
-                    <p>Issued by: Central Bank of Uzbekistan</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Privacy policy</h4>
-                    <a href="#privacy">Privacy policy</a>
-                    <a href="#terms">Terms of service</a>
+        <!-- Other Products Section -->
+        <section class="products">
+            <div class="container">
+                <div class="badge" data-i18n="badge_soon">Скоро</div>
+                <h2 class="section-title" data-i18n="products_title">Другие страховые продукты</h2>
+                <p class="section-desc" data-i18n="products_desc">Мы создаем полноценную страховую платформу. Эти
+                    продукты появятся в ближайшее время.</p>
+
+                <div class="grid-4">
+                    <div class="card product-card disabled">
+                        <div class="icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2" />
+                                <circle cx="6.5" cy="16.5" r="2.5" />
+                                <circle cx="16.5" cy="16.5" r="2.5" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="prod_kasko">КАСКО</h3>
+                        <p data-i18n="prod_kasko_desc">Полное покрытие автомобиля</p>
+                    </div>
+                    <div class="card product-card disabled">
+                        <div class="icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 7.65l.77.78 7.65 7.65 7.65-7.65.77-.78a5.4 5.4 0 0 0 0-7.65z" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="prod_health">Здоровье</h3>
+                        <p data-i18n="prod_health_desc">Медицинское страхование</p>
+                    </div>
+                    <div class="card product-card disabled">
+                        <div class="icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 2L11 13" />
+                                <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="prod_travel">Путешествия</h3>
+                        <p data-i18n="prod_travel_desc">Защита в поездках</p>
+                    </div>
+                    <div class="card product-card disabled">
+                        <div class="icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                <polyline points="9 22 9 12 15 12 15 22" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="prod_property">Имущество</h3>
+                        <p data-i18n="prod_property_desc">Дом и активы</p>
+                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 EASY sugurta. All rights reserved.</p>
+        </section>
+
+        <!-- OSAGO Section -->
+        <section class="osago">
+            <div class="container">
+                <div class="badge" data-i18n="badge_available">Доступно сейчас</div>
+                <h2 class="section-title" data-i18n="osago_title">ОСАГО — Обязательное автострахование</h2>
+                <p class="section-desc" data-i18n="osago_desc">Оформите полис онлайн. Быстро, понятно и без лишних
+                    хлопот.</p>
+
+                <div class="grid-3">
+                    <div class="card feature-card">
+                        <div class="icon-box">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="feat_price">Регулируемая цена</h3>
+                        <p data-i18n="feat_price_desc">Тарифы установлены законом</p>
+                    </div>
+                    <div class="card feature-card">
+                        <div class="icon-box">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="feat_fast">Быстрое оформление</h3>
+                        <p data-i18n="feat_fast_desc">Завершите за 10 минут</p>
+                    </div>
+                    <div class="card feature-card">
+                        <div class="icon-box">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                                <polyline points="10 9 9 9 8 9" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="feat_digital">Цифровой полис</h3>
+                        <p data-i18n="feat_digital_desc">Получите мгновенно на телефон</p>
+                    </div>
+                </div>
+
+                <div class="center-btn">
+                    <button class="btn btn-primary" onclick="openWizard()" data-i18n="osago_btn">
+                        Оформить ОСАГО &rarr;
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Us Section -->
+        <section class="why-us">
+            <div class="container">
+                <h2 class="section-title" data-i18n="why_title">Почему EasySugurta?</h2>
+                <p class="section-desc" data-i18n="why_desc">Современная платформа, которая делает страхование простым и
+                    доступным.</p>
+
+                <div class="grid-3">
+                    <div class="simple-feature">
+                        <div class="icon-box-small">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                <polyline points="2 17 12 22 22 17" />
+                                <polyline points="2 12 12 17 22 12" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="why_aggregator">Агрегатор страхования</h3>
+                        <p data-i18n="why_aggregator_desc">Сравнивайте и выбирайте из нескольких надежных страховых
+                            компаний в одном месте.</p>
+                    </div>
+                    <div class="simple-feature">
+                        <div class="icon-box-small">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="why_simple">Быстро и просто</h3>
+                        <p data-i18n="why_simple_desc">Без бумаг и очередей. Застрахуйтесь за минуты, полностью онлайн.
+                        </p>
+                    </div>
+                    <div class="simple-feature">
+                        <div class="icon-box-small">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="why_secure">Безопасно и надёжно</h3>
+                        <p data-i18n="why_secure_desc">Ваши данные защищены. Полисы выдаются напрямую лицензированными
+                            страховщиками.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Start Section -->
+        <section class="start-choice" id="start">
+            <div class="container">
+                <h2 class="section-title" data-i18n="choice_title">Выберите способ начала</h2>
+                <p class="section-desc" data-i18n="choice_desc">Используйте наш сайт или откройте прямо в Telegram —
+                    одинаково быстрый опыт.</p>
+
+                <div class="grid-2-narrow">
+                    <div class="card choice-card">
+                        <div class="icon-circle">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="2" y1="12" x2="22" y2="12" />
+                                <path
+                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="choice_site">Сайт</h3>
+                        <p data-i18n="choice_site_desc">Заполните заявку прямо здесь в браузере</p>
+                        <button class="btn btn-primary full-width" onclick="openWizard()" data-i18n="hero_btn">
+                            Начать онлайн &rarr;
+                        </button>
+                    </div>
+                    <div class="card choice-card">
+                        <div class="icon-circle">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13" />
+                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </svg>
+                        </div>
+                        <h3 data-i18n="choice_tg">Telegram</h3>
+                        <p data-i18n="choice_tg_desc">Используйте наше Mini App в Telegram для быстрого доступа</p>
+                        <a href="https://t.me/EasySugurtaBot" target="_blank" class="btn btn-primary full-width"
+                            data-i18n="choice_tg_btn">
+                            Открыть в Telegram
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2024 Easy Sugurta. <span data-i18n="copyright">Все права защищены.</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Wizard Interface (Hidden by default) -->
+    <div id="wizard-container" style="display: none;">
+        <div class="container container-narrow">
+            <div class="wizard-header">
+                <h2 class="wizard-title" data-i18n="wizard_title">ОФОРМИТЬ ОСАГО ОНЛАЙН</h2>
+            </div>
+
+            <!-- Stepper -->
+            <div class="stepper-wrapper">
+                <div class="stepper-item completed active">
+                    <div class="step-counter">1</div>
+                    <div class="step-name" data-i18n="step_1">Данные авто</div>
+                </div>
+                <div class="stepper-item">
+                    <div class="step-counter">2</div>
+                    <div class="step-name" data-i18n="step_2">Владелец</div>
+                </div>
+                <div class="stepper-item">
+                    <div class="step-counter">3</div>
+                    <div class="step-name" data-i18n="step_3">Заявитель</div>
+                </div>
+                <div class="stepper-item">
+                    <div class="step-counter">4</div>
+                    <div class="step-name" data-i18n="step_4">Период</div>
+                </div>
+                <!-- Simplified for visual fit, or scrollable -->
+                <div class="stepper-item">
+                    <div class="step-counter">5</div>
+                    <div class="step-name" data-i18n="step_5">Водители</div>
+                </div>
+                <div class="stepper-item">
+                    <div class="step-counter">6</div>
+                    <div class="step-name" data-i18n="step_6">Подтверждение</div>
+                </div>
+                <div class="stepper-item">
+                    <div class="step-counter">7</div>
+                    <div class="step-name" data-i18n="step_7">Оплата</div>
+                </div>
+            </div>
+
+            <!-- Wizard Step Content -->
+            <div class="wizard-card">
+                <!-- Step 1: Car Data -->
+                <div id="step_1_content" class="wizard-step">
+                    <h3 class="step-title" data-i18n="step_1_title">Данные авто</h3>
+                    <div class="form-row">
+                        <div class="form-group col-half">
+                            <label data-i18n="label_car_number">Номер машины</label>
+                            <div class="plate-group">
+                                <div class="plate-region-divider"></div>
+                                <input type="text" id="car_number" placeholder="01 A 123 AA" class="plate-input">
+                                <div class="plate-branding">
+                                    <svg class="plate-flag-svg" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+                                        <!-- Blue stripe -->
+                                        <rect width="60" height="10" y="0" fill="#1EB53A" />
+                                        <!-- White stripe -->
+                                        <rect width="60" height="10" y="10" fill="#FFFFFF" />
+                                        <!-- Green stripe -->
+                                        <rect width="60" height="10" y="20" fill="#1EB53A" />
+                                        <!-- Red borders -->
+                                        <rect width="60" height="0.6" y="9.7" fill="#D52B1E" />
+                                        <rect width="60" height="0.6" y="19.7" fill="#D52B1E" />
+                                        <!-- Crescent moon -->
+                                        <circle cx="8" cy="5" r="3.5" fill="#FFFFFF" />
+                                        <circle cx="9.2" cy="5" r="3.2" fill="#1EB53A" />
+                                        <!-- 12 stars in 3 rows -->
+                                        <g fill="#FFFFFF">
+                                            <!-- Row 1: 4 stars -->
+                                            <polygon
+                                                points="15,3 15.3,4 16.2,4 15.5,4.5 15.8,5.3 15,4.8 14.2,5.3 14.5,4.5 13.8,4 14.7,4" />
+                                            <polygon
+                                                points="19,3 19.3,4 20.2,4 19.5,4.5 19.8,5.3 19,4.8 18.2,5.3 18.5,4.5 17.8,4 18.7,4" />
+                                            <polygon
+                                                points="23,3 23.3,4 24.2,4 23.5,4.5 23.8,5.3 23,4.8 22.2,5.3 22.5,4.5 21.8,4 22.7,4" />
+                                            <polygon
+                                                points="27,3 27.3,4 28.2,4 27.5,4.5 27.8,5.3 27,4.8 26.2,5.3 26.5,4.5 25.8,4 26.7,4" />
+                                            <!-- Row 2: 4 stars -->
+                                            <polygon
+                                                points="15,6 15.3,7 16.2,7 15.5,7.5 15.8,8.3 15,7.8 14.2,8.3 14.5,7.5 13.8,7 14.7,7" />
+                                            <polygon
+                                                points="19,6 19.3,7 20.2,7 19.5,7.5 19.8,8.3 19,7.8 18.2,8.3 18.5,7.5 17.8,7 18.7,7" />
+                                            <polygon
+                                                points="23,6 23.3,7 24.2,7 23.5,7.5 23.8,8.3 23,7.8 22.2,8.3 22.5,7.5 21.8,7 22.7,7" />
+                                            <polygon
+                                                points="27,6 27.3,7 28.2,7 27.5,7.5 27.8,8.3 27,7.8 26.2,8.3 26.5,7.5 25.8,7 26.7,7" />
+                                            <!-- Row 3: 4 stars -->
+                                            <polygon
+                                                points="15,9 15.3,10 16.2,10 15.5,10.5 15.8,11.3 15,10.8 14.2,11.3 14.5,10.5 13.8,10 14.7,10" />
+                                            <polygon
+                                                points="19,9 19.3,10 20.2,10 19.5,10.5 19.8,11.3 19,10.8 18.2,11.3 18.5,10.5 17.8,10 18.7,10" />
+                                            <polygon
+                                                points="23,9 23.3,10 24.2,10 23.5,10.5 23.8,11.3 23,10.8 22.2,11.3 22.5,10.5 21.8,10 22.7,10" />
+                                            <polygon
+                                                points="27,9 27.3,10 28.2,10 27.5,10.5 27.8,11.3 27,10.8 26.2,11.3 26.5,10.5 25.8,10 26.7,10" />
+                                        </g>
+                                    </svg>
+                                    <div class="plate-uz">UZ</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-half">
+                            <label data-i18n="label_tech_passport">Серия и номер тех паспорта</label>
+                            <div class="split-input">
+                                <input type="text" id="tech_series" placeholder="AAF" class="input-sm">
+                                <input type="text" id="tech_number" placeholder="0000000" class="input-md">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Owner -->
+                <div id="step_2_content" class="wizard-step" style="display: none;">
+                    <h3 class="step-title" data-i18n="step_2">Владелец</h3>
+                    <div class="form-row">
+                        <div class="form-group col-half">
+                            <label>ПИНФЛ</label>
+                            <input type="text" id="owner_pinfl" placeholder="12345678901234" class="input-lg">
+                        </div>
+                        <div class="form-group col-half">
+                            <label>Серия и номер паспорта</label>
+                            <div class="split-input">
+                                <input type="text" id="owner_pass_series" placeholder="AA" class="input-sm">
+                                <input type="text" id="owner_pass_number" placeholder="1234567" class="input-md">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-half">
+                            <label>Дата рождения</label>
+                            <input type="date" id="owner_dob" class="input-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Applicant -->
+                <div id="step_3_content" class="wizard-step" style="display: none;">
+                    <h3 class="step-title" data-i18n="step_3">Заявитель</h3>
+                    <div class="form-group">
+                        <div class="checkbox-wrapper" style="margin-bottom: 20px;">
+                            <input type="checkbox" id="applicant_is_owner" checked onchange="toggleApplicantFields()">
+                            <label for="applicant_is_owner">Заявитель является владельцем</label>
+                        </div>
+                    </div>
+                    <div id="applicant_fields" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group col-half">
+                                <label>Телефон</label>
+                                <input type="tel" id="applicant_phone" placeholder="+998 90 123 45 67" class="input-lg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Period -->
+                <div id="step_4_content" class="wizard-step" style="display: none;">
+                    <h3 class="step-title" data-i18n="step_4">Период</h3>
+                    <div class="form-row">
+                        <div class="form-group col-half">
+                            <label>Дата начала действия полиса</label>
+                            <input type="date" id="policy_start_date" class="input-lg">
+                        </div>
+                        <div class="form-group col-half">
+                            <label>Срок действия</label>
+                            <select id="policy_duration" class="input-lg" disabled>
+                                <option value="1y" selected>1 год</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Drivers -->
+                <div id="step_5_content" class="wizard-step" style="display: none;">
+                    <h3 class="step-title" data-i18n="step_5">Водители</h3>
+                    <div class="form-group">
+                        <div class="checkbox-wrapper" style="margin-bottom: 20px;">
+                            <input type="checkbox" id="unlimited_drivers" onchange="toggleDriversList()">
+                            <label for="unlimited_drivers">Без ограничения водителей (VIP)</label>
+                        </div>
+                    </div>
+                    <div id="drivers_container">
+                        <div id="drivers_list">
+                            <!-- Drivers will be added here -->
+                        </div>
+                        <button class="btn btn-secondary-outline" onclick="addDriver()" id="add_driver_btn">
+                            + Добавить водителя
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 6: Confirmation -->
+                <div id="step_6_content" class="wizard-step" style="display: none;">
+                    <h3 class="step-title" data-i18n="step_6">Подтверждение</h3>
+                    <div class="confirmation-summary">
+                        <div class="summary-section">
+                            <h4>Транспортное средство</h4>
+                            <div class="summary-item">
+                                <span>Гос. номер:</span>
+                                <span id="sum_car_number">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Техпаспорт:</span>
+                                <span id="sum_tech_passport">-</span>
+                            </div>
+                        </div>
+                        <div class="summary-section">
+                            <h4>Владелец</h4>
+                            <div class="summary-item">
+                                <span>ПИНФЛ:</span>
+                                <span id="sum_owner_pinfl">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Паспорт:</span>
+                                <span id="sum_owner_passport">-</span>
+                            </div>
+                        </div>
+                        <div class="summary-section">
+                            <h4>Условия</h4>
+                            <div class="summary-item">
+                                <span>Период:</span>
+                                <span>1 год</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Водители:</span>
+                                <span id="sum_drivers_type">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 7: Payment -->
+                <div id="step_7_content" class="wizard-step" style="display: none;">
+                    <h3 class="step-title" data-i18n="step_7">Оплата</h3>
+                    <div class="payment-selection">
+                        <p class="payment-label">Сумма к оплате:</p>
+                        <h2 class="payment-amount">56,000 UZS</h2>
+
+                        <div class="payment-grid">
+                            <label class="payment-option">
+                                <input type="radio" name="payment_method" value="payme" checked>
+                                <div class="option-content">
+                                    <div class="payment-icon">P</div>
+                                    <span class="payment-name">Payme</span>
+                                </div>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment_method" value="click">
+                                <div class="option-content">
+                                    <div class="payment-icon">C</div>
+                                    <span class="payment-name">Click</span>
+                                </div>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment_method" value="uzum">
+                                <div class="option-content">
+                                    <div class="payment-icon">U</div>
+                                    <span class="payment-name">Uzum</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wizard Footer Action -->
+            <div class="wizard-footer">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="agree_terms">
+                    <label for="agree_terms" data-i18n="terms_agree">
+                        Нажимая продолжить Вы соглашаетесь с <a href="#">Офертой</a> и даете согласие на обработку своих
+                        персональных данных
+                    </label>
+                </div>
+                <div class="wizard-actions" style="display: flex; gap: 10px; align-items: center;">
+                    <button class="btn btn-secondary-outline" id="btn_back" onclick="prevStep()" style="display: none;"
+                        data-i18n="btn_back">
+                        &larr; Назад
+                    </button>
+                    <button class="btn btn-primary" onclick="submitWizard()" data-i18n="btn_continue">
+                        Продолжить &rarr;
+                    </button>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- Removed old modal -->
+
+
+
+    <!-- Custom Notification Modal -->
+    <div id="custom-alert" class="alert-overlay" style="display: none;">
+        <div class="alert-box">
+            <div class="alert-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+            <p id="alert-message">Сообщение об ошибке</p>
+            <button class="btn btn-primary" onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+
+    <!-- Decorative Feathers -->
+    <div class="feathers-container">
+        <div class="feather f1">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 10C50 10 30 30 30 60C30 90 50 100 50 100C50 100 70 90 70 60C70 30 50 100 50 10"
+                    stroke="currentColor" stroke-width="0.5" opacity="0.3" />
+                <path d="M50 10L50 100" stroke="currentColor" stroke-width="0.2" opacity="0.5" />
+            </svg>
+        </div>
+        <div class="feather f2">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 10C50 10 20 40 20 70C20 95 50 100 50 100" stroke="currentColor" stroke-width="0.5"
+                    opacity="0.2" />
+                <path d="M50 10C50 10 80 40 80 70C80 95 50 100 50 100" stroke="currentColor" stroke-width="0.5"
+                    opacity="0.2" />
+            </svg>
+        </div>
+        <div class="feather f3">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 10C50 40 30 60 30 80C30 95 50 100 50 100" stroke="currentColor" stroke-width="0.3"
+                    opacity="0.4" />
+                <path d="M50 10C50 40 70 60 70 80C70 95 50 100 50 100" stroke="currentColor" stroke-width="0.3"
+                    opacity="0.4" />
+            </svg>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
